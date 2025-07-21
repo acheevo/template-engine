@@ -426,6 +426,120 @@ func TestExtractWithMockTemplate(t *testing.T) {
 	}
 }
 
+func TestGetTemplateInfo(t *testing.T) {
+	client := createMockClient()
+
+	tests := []struct {
+		name         string
+		templateType string
+		wantErr      bool
+		wantName     string
+		wantVarCount int
+	}{
+		{
+			name:         "valid template type",
+			templateType: "mock-frontend",
+			wantErr:      false,
+			wantName:     "mock-frontend",
+			wantVarCount: 2,
+		},
+		{
+			name:         "invalid template type",
+			templateType: "nonexistent",
+			wantErr:      true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			info, err := client.GetTemplateInfo(tt.templateType)
+			
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("GetTemplateInfo() error = nil, wantErr %v", tt.wantErr)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Errorf("GetTemplateInfo() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if info == nil {
+				t.Fatal("GetTemplateInfo() returned nil info")
+			}
+
+			if info.Name != tt.wantName {
+				t.Errorf("GetTemplateInfo() name = %v, want %v", info.Name, tt.wantName)
+			}
+
+			if len(info.Variables) != tt.wantVarCount {
+				t.Errorf("GetTemplateInfo() variables count = %v, want %v", len(info.Variables), tt.wantVarCount)
+			}
+
+			// Check that variables have expected structure
+			for name, variable := range info.Variables {
+				if variable.Type == "" {
+					t.Errorf("Variable %s has empty type", name)
+				}
+			}
+		})
+	}
+}
+
+func TestGetTemplateVariables(t *testing.T) {
+	client := createMockClient()
+
+	tests := []struct {
+		name         string
+		templateType string
+		wantErr      bool
+		wantVarCount int
+	}{
+		{
+			name:         "valid template type",
+			templateType: "mock-frontend",
+			wantErr:      false,
+			wantVarCount: 2,
+		},
+		{
+			name:         "invalid template type",
+			templateType: "nonexistent",
+			wantErr:      true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			variables, err := client.GetTemplateVariables(tt.templateType)
+			
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("GetTemplateVariables() error = nil, wantErr %v", tt.wantErr)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Errorf("GetTemplateVariables() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if len(variables) != tt.wantVarCount {
+				t.Errorf("GetTemplateVariables() variables count = %v, want %v", len(variables), tt.wantVarCount)
+			}
+
+			// Check that variables have expected structure
+			for name, variable := range variables {
+				if variable.Type == "" {
+					t.Errorf("Variable %s has empty type", name)
+				}
+			}
+		})
+	}
+}
+
 func TestValidate(t *testing.T) {
 	client := New()
 

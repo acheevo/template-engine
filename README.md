@@ -186,6 +186,69 @@ Validate a template structure.
 #### ListTemplates() ([]string, error)
 List available template types.
 
+#### GetTemplateInfo(templateType) (*TemplateInfo, error)
+Get complete template metadata and variable structure for a specific template type.
+
+#### GetTemplateVariables(templateType) (map[string]Variable, error)
+Get just the variables for a specific template type.
+
+### Template Discovery
+
+You can programmatically discover template structures:
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    
+    "github.com/acheevo/template-engine/sdk"
+)
+
+func main() {
+    client := sdk.New()
+    
+    // List all available template types
+    templates := client.ListTemplates()
+    fmt.Printf("Available templates: %v\n", templates)
+    
+    // Get detailed info for a specific template
+    info, err := client.GetTemplateInfo("frontend")
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    fmt.Printf("Template: %s\n", info.Name)
+    fmt.Printf("Description: %s\n", info.Description)
+    fmt.Printf("Variables:\n")
+    
+    for name, variable := range info.Variables {
+        required := ""
+        if variable.Required {
+            required = " (required)"
+        }
+        defaultVal := ""
+        if variable.Default != "" {
+            defaultVal = fmt.Sprintf(" [default: %s]", variable.Default)
+        }
+        fmt.Printf("  %s: %s%s%s - %s\n", 
+            name, variable.Type, required, defaultVal, variable.Description)
+    }
+    
+    // Or just get variables
+    variables, err := client.GetTemplateVariables("go-api")
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    for name, variable := range variables {
+        fmt.Printf("%s: %+v\n", name, variable)
+    }
+}
+```
+
 ### Options Structs
 
 ```go
@@ -207,6 +270,20 @@ type Variables struct {
     GitHubRepo  string            // GitHub repository
     OutputDir   string            // Output directory
     Custom      map[string]string // Custom variables
+}
+
+type TemplateInfo struct {
+    Name        string              `json:"name"`
+    Type        string              `json:"type"`
+    Description string              `json:"description"`
+    Variables   map[string]Variable `json:"variables"`
+}
+
+type Variable struct {
+    Type        string `json:"type"`
+    Required    bool   `json:"required"`
+    Default     string `json:"default,omitempty"`
+    Description string `json:"description,omitempty"`
 }
 ```
 

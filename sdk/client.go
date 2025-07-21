@@ -15,17 +15,16 @@ type Client struct {
 	templates map[string]core.TemplateType
 }
 
-// New creates a new SDK client
+// New creates a new SDK client with built-in templates
 func New() *Client {
-	// Get registered template types from core registry
-	templateNames := core.ListTemplates()
 	templates := make(map[string]core.TemplateType)
-
-	for _, name := range templateNames {
-		if template, err := core.GetTemplate(name); err == nil {
-			templates[name] = template
-		}
-	}
+	
+	// Register built-in templates directly in SDK
+	frontendTemplate := &FrontendTemplate{}
+	goAPITemplate := &GoAPITemplate{}
+	
+	templates[frontendTemplate.Name()] = frontendTemplate
+	templates[goAPITemplate.Name()] = goAPITemplate
 
 	return &Client{
 		templates: templates,
@@ -142,6 +141,68 @@ func (c *Client) ListTemplates() []string {
 	return templates
 }
 
+// GetTemplateInfo returns the structure and metadata for a specific template type
+func (c *Client) GetTemplateInfo(templateType string) (*TemplateInfo, error) {
+	template, exists := c.templates[templateType]
+	if !exists {
+		return nil, newTemplateTypeError("GetTemplateInfo", templateType)
+	}
+
+	// Convert core.Variable map to SDK Variable map
+	coreVariables := template.GetVariables()
+	sdkVariables := make(map[string]Variable)
+	for name, coreVar := range coreVariables {
+		sdkVariables[name] = Variable{
+			Type:        coreVar.Type,
+			Required:    coreVar.Required,
+			Default:     coreVar.Default,
+			Description: coreVar.Description,
+		}
+	}
+
+	return &TemplateInfo{
+		Name:        template.Name(),
+		Type:        template.Name(),
+		Description: c.getTemplateDescription(template.Name()),
+		Variables:   sdkVariables,
+	}, nil
+}
+
+// GetTemplateVariables returns just the variables for a specific template type
+func (c *Client) GetTemplateVariables(templateType string) (map[string]Variable, error) {
+	template, exists := c.templates[templateType]
+	if !exists {
+		return nil, newTemplateTypeError("GetTemplateVariables", templateType)
+	}
+
+	// Convert core.Variable map to SDK Variable map
+	coreVariables := template.GetVariables()
+	sdkVariables := make(map[string]Variable)
+	for name, coreVar := range coreVariables {
+		sdkVariables[name] = Variable{
+			Type:        coreVar.Type,
+			Required:    coreVar.Required,
+			Default:     coreVar.Default,
+			Description: coreVar.Description,
+		}
+	}
+
+	return sdkVariables, nil
+}
+
+// getTemplateDescription returns a description for known template types
+func (c *Client) getTemplateDescription(templateType string) string {
+	descriptions := map[string]string{
+		"frontend": "React TypeScript frontend template with Tailwind CSS",
+		"go-api":   "Go REST API template with Gin and PostgreSQL",
+	}
+	
+	if desc, exists := descriptions[templateType]; exists {
+		return desc
+	}
+	return fmt.Sprintf("Template for %s projects", templateType)
+}
+
 // Variables contains template variables
 type Variables struct {
 	ProjectName string
@@ -150,6 +211,22 @@ type Variables struct {
 	Author      string
 	Description string
 	Custom      map[string]string
+}
+
+// TemplateInfo represents template metadata and structure
+type TemplateInfo struct {
+	Name        string              `json:"name"`
+	Type        string              `json:"type"`
+	Description string              `json:"description"`
+	Variables   map[string]Variable `json:"variables"`
+}
+
+// Variable represents a template variable definition (exported from core.Variable)
+type Variable struct {
+	Type        string `json:"type"`
+	Required    bool   `json:"required"`
+	Default     string `json:"default,omitempty"`
+	Description string `json:"description,omitempty"`
 }
 
 // ExtractAndGenerate extracts a template from a source directory and immediately generates a project
