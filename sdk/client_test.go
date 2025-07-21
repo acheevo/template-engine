@@ -453,7 +453,7 @@ func TestGetTemplateInfo(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			info, err := client.GetTemplateInfo(tt.templateType)
-			
+
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("GetTemplateInfo() error = nil, wantErr %v", tt.wantErr)
@@ -513,7 +513,7 @@ func TestGetTemplateVariables(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			variables, err := client.GetTemplateVariables(tt.templateType)
-			
+
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("GetTemplateVariables() error = nil, wantErr %v", tt.wantErr)

@@ -18,11 +18,11 @@ type Client struct {
 // New creates a new SDK client with built-in templates
 func New() *Client {
 	templates := make(map[string]core.TemplateType)
-	
+
 	// Register built-in templates directly in SDK
 	frontendTemplate := &FrontendTemplate{}
 	goAPITemplate := &GoAPITemplate{}
-	
+
 	templates[frontendTemplate.Name()] = frontendTemplate
 	templates[goAPITemplate.Name()] = goAPITemplate
 
@@ -196,7 +196,7 @@ func (c *Client) getTemplateDescription(templateType string) string {
 		"frontend": "React TypeScript frontend template with Tailwind CSS",
 		"go-api":   "Go REST API template with Gin and PostgreSQL",
 	}
-	
+
 	if desc, exists := descriptions[templateType]; exists {
 		return desc
 	}
