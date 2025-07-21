@@ -1,0 +1,94 @@
+version: "2"
+run:
+  concurrency: 4
+  go: "1.23"
+  tests: true
+linters:
+  default: none
+  enable:
+    - bodyclose
+    - dogsled
+    - dupl
+    - errcheck
+    - goconst
+    - gocritic
+    - gocyclo
+    - goprintffuncname
+    - gosec
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - nolintlint
+    - rowserrcheck
+    - staticcheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+  settings:
+    dupl:
+      threshold: 100
+    errcheck:
+      check-type-assertions: true
+    goconst:
+      min-len: 3
+      min-occurrences: 3
+    gocyclo:
+      min-complexity: 15
+    lll:
+      line-length: 120
+    misspell:
+      locale: US
+    nakedret:
+      max-func-lines: 30
+    prealloc:
+      simple: true
+      range-loops: true
+      for-loops: true
+    unparam:
+      check-exported: false
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - dupl
+          - errcheck
+          - gocyclo
+          - gosec
+        path: _test\.go
+      - linters:
+          - gosec
+        path: internal/hmac/
+        text: weak cryptographic primitive
+      - linters:
+          - staticcheck
+        text: 'SA9003:'
+      - linters:
+          - lll
+        source: '^//go:generate '
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+      - tools$
+issues:
+  max-same-issues: 3
+formatters:
+  enable:
+    - gofmt
+    - goimports
+    - gofumpt
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+      - tools$
