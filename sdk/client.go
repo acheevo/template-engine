@@ -12,19 +12,12 @@ import (
 
 // Client provides programmatic access to the template engine
 type Client struct {
-	templates map[string]core.TemplateType
+	templates map[string]*core.TemplateSchema
 }
 
-// New creates a new SDK client with built-in templates
+// New creates a new SDK client
 func New() *Client {
-	templates := make(map[string]core.TemplateType)
-
-	// Register built-in templates directly in SDK
-	frontendTemplate := &FrontendTemplate{}
-	goAPITemplate := &GoAPITemplate{}
-
-	templates[frontendTemplate.Name()] = frontendTemplate
-	templates[goAPITemplate.Name()] = goAPITemplate
+	templates := make(map[string]*core.TemplateSchema)
 
 	return &Client{
 		templates: templates,
@@ -47,31 +40,46 @@ type ExtractOptions struct {
 	OutputDir string // Optional: directory to save template file
 }
 
-// Generate creates a new project from a built-in template
+// Generate creates a new project from a registered template
 func (c *Client) Generate(ctx context.Context, opts GenerateOptions) error {
 	if err := c.ValidateGenerateOptions(opts); err != nil {
 		return err
 	}
 
-	// Get template type
-	_, exists := c.templates[opts.Template]
+	// Get template schema
+	schema, exists := c.templates[opts.Template]
 	if !exists {
 		return newTemplateTypeError("Generate", opts.Template)
 	}
 
-	// This method expects a pre-extracted schema, so return error for now
-	return newValidationError("Generate", "requires a pre-extracted template",
-		"Use ExtractAndGenerate() for on-demand workflow")
+	// Create variables from options
+	variables := Variables{
+		ProjectName: opts.ProjectName,
+		GitHubRepo:  opts.GitHubRepo,
+		OutputDir:   opts.OutputDir,
+		Custom:      opts.Variables,
+	}
+
+	// Set defaults if not provided
+	if variables.Author == "" {
+		variables.Author = "Developer"
+	}
+	if variables.Description == "" {
+		variables.Description = fmt.Sprintf("A %s application", opts.ProjectName)
+	}
+
+	return c.GenerateFromTemplate(ctx, schema, variables)
 }
 
-// Extract creates a template schema from a source directory
+// Extract creates a template schema from a source directory using the global registry
 func (c *Client) Extract(ctx context.Context, opts ExtractOptions) (*core.TemplateSchema, error) {
 	if err := c.ValidateExtractOptions(opts); err != nil {
 		return nil, err
 	}
 
-	templateType, exists := c.templates[opts.Type]
-	if !exists {
+	// Use the global template registry for extraction
+	templateType, err := core.GetTemplate(opts.Type)
+	if err != nil {
 		return nil, newTemplateTypeError("Extract", opts.Type)
 	}
 
@@ -132,26 +140,54 @@ func (c *Client) Validate(schema *core.TemplateSchema) error {
 	return core.ValidateSchema(schema)
 }
 
-// ListTemplates returns available template types
-func (c *Client) ListTemplates() []string {
-	var templates []string
-	for name := range c.templates {
-		templates = append(templates, name)
+// RegisterTemplate registers a template from a JSON file
+func (c *Client) RegisterTemplate(templatePath string) error {
+	// Check if template file exists
+	if _, err := os.Stat(templatePath); os.IsNotExist(err) {
+		return newFileSystemError("RegisterTemplate", "template file does not exist", err)
+	}
+
+	// Load template schema from file
+	data, err := os.ReadFile(templatePath)
+	if err != nil {
+		return newFileSystemError("RegisterTemplate", "failed to read template file", err)
+	}
+
+	var schema core.TemplateSchema
+	if err := json.Unmarshal(data, &schema); err != nil {
+		return newSchemaError("RegisterTemplate", "failed to parse template file", err)
+	}
+
+	// Validate the schema
+	if err := c.Validate(&schema); err != nil {
+		return newSchemaError("RegisterTemplate", "invalid template schema", err)
+	}
+
+	// Register the template using its name
+	c.templates[schema.Name] = &schema
+
+	return nil
+}
+
+// ListTemplates returns available template names and descriptions
+func (c *Client) ListTemplates() map[string]string {
+	templates := make(map[string]string)
+	for name, schema := range c.templates {
+		templates[name] = schema.Description
 	}
 	return templates
 }
 
-// GetTemplateInfo returns the structure and metadata for a specific template type
-func (c *Client) GetTemplateInfo(templateType string) (*TemplateInfo, error) {
-	template, exists := c.templates[templateType]
+// GetTemplateInfo returns the structure and metadata for a specific template
+func (c *Client) GetTemplateInfo(templateName string) (*TemplateInfo, error) {
+	schema, exists := c.templates[templateName]
 	if !exists {
-		return nil, newTemplateTypeError("GetTemplateInfo", templateType)
+		return nil, newTemplateTypeError("GetTemplateInfo", templateName)
 	}
 
 	// Convert core.Variable map to SDK Variable map
-	coreVariables := template.GetVariables()
 	sdkVariables := make(map[string]Variable)
-	for name, coreVar := range coreVariables {
+	for name, coreVar := range schema.Variables {
 		sdkVariables[name] = Variable{
 			Type:        coreVar.Type,
 			Required:    coreVar.Required,
@@ -161,24 +197,23 @@ func (c *Client) GetTemplateInfo(templateType string) (*TemplateInfo, error) {
 	}
 
 	return &TemplateInfo{
-		Name:        template.Name(),
-		Type:        template.Name(),
-		Description: c.getTemplateDescription(template.Name()),
+		Name:        schema.Name,
+		Type:        schema.Type,
+		Description: schema.Description,
 		Variables:   sdkVariables,
 	}, nil
 }
 
-// GetTemplateVariables returns just the variables for a specific template type
-func (c *Client) GetTemplateVariables(templateType string) (map[string]Variable, error) {
-	template, exists := c.templates[templateType]
+// GetTemplateVariables returns just the variables for a specific template
+func (c *Client) GetTemplateVariables(templateName string) (map[string]Variable, error) {
+	schema, exists := c.templates[templateName]
 	if !exists {
-		return nil, newTemplateTypeError("GetTemplateVariables", templateType)
+		return nil, newTemplateTypeError("GetTemplateVariables", templateName)
 	}
 
 	// Convert core.Variable map to SDK Variable map
-	coreVariables := template.GetVariables()
 	sdkVariables := make(map[string]Variable)
-	for name, coreVar := range coreVariables {
+	for name, coreVar := range schema.Variables {
 		sdkVariables[name] = Variable{
 			Type:        coreVar.Type,
 			Required:    coreVar.Required,
@@ -188,19 +223,6 @@ func (c *Client) GetTemplateVariables(templateType string) (map[string]Variable,
 	}
 
 	return sdkVariables, nil
-}
-
-// getTemplateDescription returns a description for known template types
-func (c *Client) getTemplateDescription(templateType string) string {
-	descriptions := map[string]string{
-		"frontend": "React TypeScript frontend template with Tailwind CSS",
-		"go-api":   "Go REST API template with Gin and PostgreSQL",
-	}
-
-	if desc, exists := descriptions[templateType]; exists {
-		return desc
-	}
-	return fmt.Sprintf("Template for %s projects", templateType)
 }
 
 // Variables contains template variables

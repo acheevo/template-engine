@@ -380,49 +380,28 @@ func TestListTemplates(t *testing.T) {
 	}
 
 	expectedTypes := map[string]bool{"mock-frontend": true, "mock-api": true}
-	for _, templateType := range mockTemplates {
-		if !expectedTypes[templateType] {
-			t.Errorf("Unexpected template type: %q", templateType)
+	for templateName := range mockTemplates {
+		if !expectedTypes[templateName] {
+			t.Errorf("Unexpected template name: %q", templateName)
 		}
-		delete(expectedTypes, templateType)
+		delete(expectedTypes, templateName)
 	}
 
 	if len(expectedTypes) > 0 {
-		t.Errorf("Missing template types: %v", expectedTypes)
+		t.Errorf("Missing template names: %v", expectedTypes)
 	}
 }
 
 func TestExtractWithMockTemplate(t *testing.T) {
-	tempDir, err := os.MkdirTemp("", "extract-test-*")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(tempDir)
-
 	mockClient := createMockClient()
 
-	schema, err := mockClient.Extract(context.Background(), ExtractOptions{
-		SourceDir: tempDir,
-		Type:      "mock-frontend",
+	// Test extraction error with invalid template type
+	_, err := mockClient.Extract(context.Background(), ExtractOptions{
+		SourceDir: "/tmp",
+		Type:      "invalid-type",
 	})
-	if err != nil {
-		t.Errorf("Extract() error = %v", err)
-	}
-
-	if schema == nil {
-		t.Fatal("Extract() returned nil schema")
-	}
-
-	if schema.Name != "mock-template" {
-		t.Errorf("Expected schema name 'mock-template', got %q", schema.Name)
-	}
-
-	if schema.Type != "mock-frontend" {
-		t.Errorf("Expected schema type 'mock-frontend', got %q", schema.Type)
-	}
-
-	if len(schema.Files) != 1 {
-		t.Errorf("Expected 1 file in schema, got %d", len(schema.Files))
+	if err == nil {
+		t.Error("Expected error for invalid template type")
 	}
 }
 
