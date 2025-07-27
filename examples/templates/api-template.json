@@ -36,18 +36,39 @@
       "hash": "7a07e78a18e7a676537112b1d951057f7589bbef9165f73a25a04bc8a3cbcf2b"
     },
     {
-      "path": ".dockerignore",
+      "path": ".github/ISSUE_TEMPLATE/bug_report.md",
       "template": false,
-      "content": ".git\n.gitignore\nREADME.md\nDockerfile\n.dockerignore\ndocker-compose.yml\n.env\n.env.local\n*.log\ntmp/\n.DS_Store",
-      "size": 106,
-      "hash": "dcc4bd116c5736baf191200d8f555114b617a5301b165158396a8319a45deb81"
+      "content": "---\nname: Bug report\nabout: Create a report to help us improve\ntitle: '[BUG] '\nlabels: 'bug'\nassignees: ''\n---\n\n## Bug Description\nA clear and concise description of what the bug is.\n\n## Steps to Reproduce\n1. Go to '...'\n2. Click on '....'\n3. Scroll down to '....'\n4. See error\n\n## Expected Behavior\nA clear and concise description of what you expected to happen.\n\n## Actual Behavior\nA clear and concise description of what actually happened.\n\n## Environment\n- **OS**: [e.g. Ubuntu 22.04, macOS 13.0]\n- **Go Version**: [e.g. 1.23.0]\n- **API Version**: [e.g. v1.2.3]\n- **Database**: [e.g. PostgreSQL 16.1]\n- **Deployment**: [e.g. Kubernetes, Docker Compose, Local]\n\n## Screenshots/Logs\nIf applicable, add screenshots or logs to help explain your problem.\n\n```\nPaste relevant logs here\n```\n\n## Additional Context\nAdd any other context about the problem here.\n\n## Possible Solution\nIf you have ideas on how to fix this, please describe them here.",
+      "size": 943,
+      "hash": "1acfb5ac27ed9fbc464512cfad166ba5fe27690a89c2af14353845d5e013ac22"
     },
     {
-      "path": ".golangci.yml",
+      "path": ".github/ISSUE_TEMPLATE/feature_request.md",
       "template": false,
-      "content": "version: \"2\"\nrun:\n  concurrency: 4\n  go: \"1.23\"\n  tests: true\nlinters:\n  default: none\n  enable:\n    - bodyclose\n    - dogsled\n    - dupl\n    - errcheck\n    - goconst\n    - gocritic\n    - gocyclo\n    - goprintffuncname\n    - gosec\n    - govet\n    - ineffassign\n    - lll\n    - misspell\n    - nakedret\n    - nolintlint\n    - rowserrcheck\n    - staticcheck\n    - unconvert\n    - unparam\n    - unused\n    - whitespace\n  settings:\n    dupl:\n      threshold: 100\n    errcheck:\n      check-type-assertions: true\n    goconst:\n      min-len: 3\n      min-occurrences: 3\n    gocyclo:\n      min-complexity: 15\n    lll:\n      line-length: 120\n    misspell:\n      locale: US\n    nakedret:\n      max-func-lines: 30\n    prealloc:\n      simple: true\n      range-loops: true\n      for-loops: true\n    unparam:\n      check-exported: false\n  exclusions:\n    generated: lax\n    presets:\n      - comments\n      - common-false-positives\n      - legacy\n      - std-error-handling\n    rules:\n      - linters:\n          - dupl\n          - errcheck\n          - gocyclo\n          - gosec\n        path: _test\\.go\n      - linters:\n          - bodyclose\n        path: internal/client/http\\.go\n        text: response body must be closed\n      - linters:\n          - gosec\n        path: internal/hmac/\n        text: weak cryptographic primitive\n      - linters:\n          - staticcheck\n        text: 'SA9003:'\n      - linters:\n          - lll\n        source: '^//go:generate '\n    paths:\n      - third_party$\n      - builtin$\n      - examples$\n      - tools$\nissues:\n  max-same-issues: 3\nformatters:\n  enable:\n    - gofmt\n    - goimports\n    - gofumpt\n  exclusions:\n    generated: lax\n    paths:\n      - third_party$\n      - builtin$\n      - examples$\n      - tools$\n",
-      "size": 1735,
-      "hash": "f413f1583f9b5546bc6523bcfd8b910e8c81a485fdcf3376fa1c1e646cbc6a81"
+      "content": "---\nname: Feature request\nabout: Suggest an idea for this project\ntitle: '[FEATURE] '\nlabels: 'enhancement'\nassignees: ''\n---\n\n## Feature Description\nA clear and concise description of what you want to happen.\n\n## Problem Statement\nA clear and concise description of what the problem is. Ex. I'm always frustrated when [...]\n\n## Proposed Solution\nA clear and concise description of what you want to happen.\n\n## Alternative Solutions\nA clear and concise description of any alternative solutions or features you've considered.\n\n## Use Cases\nDescribe the use cases for this feature:\n- Use case 1: ...\n- Use case 2: ...\n\n## Implementation Ideas\nIf you have ideas on how to implement this feature:\n- [ ] API changes needed\n- [ ] Database changes needed\n- [ ] Configuration changes needed\n- [ ] Breaking changes\n\n## Additional Context\nAdd any other context or screenshots about the feature request here.\n\n## Acceptance Criteria\n- [ ] Criterion 1\n- [ ] Criterion 2\n- [ ] Criterion 3",
+      "size": 975,
+      "hash": "9aea6a487ebd2913c6000660d5a1221021a4b6f1a0122c144868df3e7702563e"
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "template": false,
+      "content": "# Pull Request\n\n## Description\nBrief description of the changes and their purpose.\n\n## Type of Change\n- [ ] Bug fix (non-breaking change which fixes an issue)\n- [ ] New feature (non-breaking change which adds functionality)\n- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)\n- [ ] Documentation update\n- [ ] Performance improvement\n- [ ] Code refactoring\n\n## Related Issues\nFixes #(issue number)\n\n## Testing\n- [ ] Unit tests pass locally\n- [ ] Integration tests pass locally\n- [ ] Added tests for new functionality\n- [ ] Manual testing completed\n\n## Security\n- [ ] No sensitive data exposed\n- [ ] Authentication/authorization considered\n- [ ] Input validation implemented\n- [ ] SQL injection prevention verified\n\n## Performance\n- [ ] No performance regressions\n- [ ] Database queries optimized\n- [ ] Memory usage considered\n- [ ] Caching strategy implemented (if applicable)\n\n## Documentation\n- [ ] Code is self-documenting\n- [ ] Comments added for complex logic\n- [ ] API documentation updated (if applicable)\n- [ ] README updated (if applicable)\n\n## Deployment\n- [ ] Database migrations included (if applicable)\n- [ ] Environment variables documented\n- [ ] Kubernetes manifests updated (if applicable)\n- [ ] Breaking changes documented\n\n## Checklist\n- [ ] My code follows the project's coding standards\n- [ ] I have performed a self-review of my code\n- [ ] I have commented my code, particularly in hard-to-understand areas\n- [ ] I have made corresponding changes to the documentation\n- [ ] My changes generate no new warnings\n- [ ] I have added tests that prove my fix is effective or that my feature works\n- [ ] New and existing unit tests pass locally with my changes\n- [ ] Any dependent changes have been merged and published",
+      "size": 1783,
+      "hash": "d98395017e75493575ce56ef61e4180ae48964ef7c15726374e35072b4519329"
+    },
+    {
+      "path": ".github/dependabot.yml",
+      "template": false,
+      "content": "version: 2\nupdates:\n  # Go modules\n  - package-ecosystem: \"gomod\"\n    directory: \"/\"\n    schedule:\n      interval: \"weekly\"\n      day: \"monday\"\n      time: \"06:00\"\n    open-pull-requests-limit: 10\n    reviewers:\n      - \"acheevo/backend-team\"\n    assignees:\n      - \"acheevo/backend-team\"\n    commit-message:\n      prefix: \"deps\"\n      include: \"scope\"\n    labels:\n      - \"dependencies\"\n      - \"go\"\n\n  # Docker\n  - package-ecosystem: \"docker\"\n    directory: \"/\"\n    schedule:\n      interval: \"weekly\"\n      day: \"monday\"\n      time: \"06:00\"\n    open-pull-requests-limit: 5\n    reviewers:\n      - \"acheevo/backend-team\"\n    commit-message:\n      prefix: \"deps\"\n      include: \"scope\"\n    labels:\n      - \"dependencies\"\n      - \"docker\"\n\n  # GitHub Actions\n  - package-ecosystem: \"github-actions\"\n    directory: \"/\"\n    schedule:\n      interval: \"weekly\"\n      day: \"monday\"\n      time: \"06:00\"\n    open-pull-requests-limit: 5\n    reviewers:\n      - \"acheevo/backend-team\"\n    commit-message:\n      prefix: \"deps\"\n      include: \"scope\"\n    labels:\n      - \"dependencies\"\n      - \"github-actions\"",
+      "size": 1096,
+      "hash": "fd0130e2b1c340120e9d7aea62fb00178bea8929b0f15ebebb3bdcf7f7669520"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "template": false,
+      "content": "name: CI\n\non:\n  push:\n    branches: [ main, develop ]\n  pull_request:\n    branches: [ main ]\n\nenv:\n  GO_VERSION: '1.23'\n\njobs:\n  test:\n    name: Test\n    runs-on: ubuntu-latest\n    \n    steps:\n    - name: Checkout code\n      uses: actions/checkout@v4\n\n    - name: Set up Go\n      uses: actions/setup-go@v5\n      with:\n        go-version: ${{ env.GO_VERSION }}\n        cache: true\n\n    - name: Install golangci-lint\n      uses: golangci/golangci-lint-action@v7\n      with:\n        version: v2.0.2\n\n    - name: Build\n      run: go build ./cmd/api\n\n    - name: Test\n      run: go test -race ./...\n\n  docker:\n    name: Docker Build\n    runs-on: ubuntu-latest\n    needs: test\n    \n    steps:\n    - name: Checkout code\n      uses: actions/checkout@v4\n\n    - name: Set up Docker Buildx\n      uses: docker/setup-buildx-action@v3\n\n    - name: Build Docker image\n      uses: docker/build-push-action@v5\n      with:\n        context: .\n        push: false\n        tags: api-template:latest\n        cache-from: type=gha\n        cache-to: type=gha,mode=max",
+      "size": 1042,
+      "hash": "cb89c3549fa56f8110efa336f22291cbf0cbbb5891dbaa8d67f7921e21be4cd7"
     },
     {
       "path": "Dockerfile",
@@ -234,9 +255,9 @@
     {
       "path": "internal/http/server.go",
       "template": true,
-      "content": "package http\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"log/slog\"\n\t\"net/http\"\n\n\tauthservice \"github.com/acheevo/api-template/internal/auth/service\"\n\t\"github.com/acheevo/api-template/internal/health/transport\"\n\tinfotransport \"github.com/acheevo/api-template/internal/info/transport\"\n\t\"github.com/acheevo/api-template/internal/middleware\"\n\t\"github.com/acheevo/api-template/internal/shared/config\"\n\t\"github.com/gin-gonic/gin\"\n\t\"github.com/prometheus/client_golang/prometheus/promhttp\"\n)\n\ntype Server struct {\n\tserver *http.Server\n\tlogger *slog.Logger\n}\n\nfunc NewServer(cfg *config.Config, logger *slog.Logger, healthHandler *transport.HealthHandler,\n\tinfoHandler *infotransport.InfoHandler, jwtService authservice.JWTService,\n) *Server {\n\tif cfg.IsProduction() {\n\t\tgin.SetMode(gin.ReleaseMode)\n\t}\n\n\trouter := gin.New()\n\n\trouter.Use(middleware.RequestID())\n\trouter.Use(middleware.Recovery(logger))\n\trouter.Use(middleware.Logging(logger))\n\trouter.Use(middleware.Metrics())\n\n\t// Register health endpoints\n\thealthHandler.RegisterRoutes(router)\n\n\t// Prometheus metrics endpoint\n\trouter.GET(\"/metrics\", gin.WrapH(promhttp.Handler()))\n\n\tjwtMiddleware := middleware.JWTAuth(jwtService, logger)\n\n\t// API routes for microservice endpoints\n\tapi := router.Group(\"/api/v1\")\n\tapi.Use(jwtMiddleware) // Protect all API routes\n\t{\n\t\tinfoHandler.RegisterRoutes(api)\n\t}\n\n\tserver := \u0026http.Server{\n\t\tAddr:         cfg.HTTPAddr,\n\t\tHandler:      router,\n\t\tReadTimeout:  cfg.ReadTimeoutDuration(),\n\t\tWriteTimeout: cfg.WriteTimeoutDuration(),\n\t\tIdleTimeout:  cfg.IdleTimeoutDuration(),\n\t}\n\n\treturn \u0026Server{\n\t\tserver: server,\n\t\tlogger: logger,\n\t}\n}\n\nfunc (s *Server) Start() error {\n\ts.logger.Info(\"starting HTTP server\", \"addr\", s.server.Addr)\n\n\tif err := s.server.ListenAndServe(); err != nil \u0026\u0026 err != http.ErrServerClosed {\n\t\treturn fmt.Errorf(\"failed to start server: %w\", err)\n\t}\n\n\treturn nil\n}\n\nfunc (s *Server) Stop(ctx context.Context) error {\n\ts.logger.Info(\"stopping HTTP server\")\n\treturn s.server.Shutdown(ctx)\n}\n",
-      "size": 1983,
-      "hash": "4158bf235b542dad9f89a92e3b721ac3f2bef6c45c81fe592754b37fd1879488",
+      "content": "package http\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"log/slog\"\n\t\"net/http\"\n\n\tauthservice \"github.com/acheevo/api-template/internal/auth/service\"\n\t\"github.com/acheevo/api-template/internal/health/transport\"\n\tinfotransport \"github.com/acheevo/api-template/internal/info/transport\"\n\t\"github.com/acheevo/api-template/internal/middleware\"\n\t\"github.com/acheevo/api-template/internal/shared/config\"\n\t\"github.com/gin-gonic/gin\"\n\t\"github.com/prometheus/client_golang/prometheus/promhttp\"\n)\n\ntype Server struct {\n\tserver *http.Server\n\tlogger *slog.Logger\n}\n\nfunc NewServer(cfg *config.Config, logger *slog.Logger, healthHandler *transport.HealthHandler,\n\tinfoHandler *infotransport.InfoHandler, jwtService authservice.JWTService,\n) *Server {\n\tif cfg.IsProduction() {\n\t\tgin.SetMode(gin.ReleaseMode)\n\t}\n\n\trouter := gin.New()\n\n\trouter.Use(middleware.RequestID())\n\trouter.Use(middleware.Recovery(logger))\n\trouter.Use(middleware.Logging(logger))\n\n\tif cfg.MetricsEnabled {\n\t\trouter.Use(middleware.Metrics())\n\t\t// Prometheus metrics endpoint\n\t\trouter.GET(\"/metrics\", gin.WrapH(promhttp.Handler()))\n\t}\n\n\t// Register health endpoints\n\thealthHandler.RegisterRoutes(router)\n\n\tjwtMiddleware := middleware.JWTAuth(jwtService, logger)\n\n\t// API routes for microservice endpoints\n\tapi := router.Group(\"/api/v1\")\n\tapi.Use(jwtMiddleware) // Protect all API routes\n\t{\n\t\tinfoHandler.RegisterRoutes(api)\n\t}\n\n\tserver := \u0026http.Server{\n\t\tAddr:         cfg.HTTPAddr,\n\t\tHandler:      router,\n\t\tReadTimeout:  cfg.ReadTimeoutDuration(),\n\t\tWriteTimeout: cfg.WriteTimeoutDuration(),\n\t\tIdleTimeout:  cfg.IdleTimeoutDuration(),\n\t}\n\n\treturn \u0026Server{\n\t\tserver: server,\n\t\tlogger: logger,\n\t}\n}\n\nfunc (s *Server) Start() error {\n\ts.logger.Info(\"starting HTTP server\", \"addr\", s.server.Addr)\n\n\tif err := s.server.ListenAndServe(); err != nil \u0026\u0026 err != http.ErrServerClosed {\n\t\treturn fmt.Errorf(\"failed to start server: %w\", err)\n\t}\n\n\treturn nil\n}\n\nfunc (s *Server) Stop(ctx context.Context) error {\n\ts.logger.Info(\"stopping HTTP server\")\n\treturn s.server.Shutdown(ctx)\n}\n",
+      "size": 2014,
+      "hash": "f4544a82a6ee8bf88c87a94598f0e1a7aca3055fcc9ef765b1cc7e360f181c95",
       "mappings": [
         {
           "find": "\"github.com/acheevo/api-template/",
@@ -364,9 +385,9 @@
     {
       "path": "internal/shared/config/config.go",
       "template": true,
-      "content": "package config\n\nimport (\n\t\"fmt\"\n\t\"time\"\n\n\t\"github.com/kelseyhightower/envconfig\"\n)\n\ntype Config struct {\n\t// HTTP Server Configuration\n\tHTTPAddr     string `envconfig:\"HTTP_ADDR\" default:\":8080\"`\n\tReadTimeout  string `envconfig:\"READ_TIMEOUT\" default:\"15s\"`\n\tWriteTimeout string `envconfig:\"WRITE_TIMEOUT\" default:\"15s\"`\n\tIdleTimeout  string `envconfig:\"IDLE_TIMEOUT\" default:\"60s\"`\n\n\t// Database Configuration (optional for some microservices)\n\tDBHost            string `envconfig:\"DB_HOST\" default:\"localhost\"`\n\tDBPort            string `envconfig:\"DB_PORT\" default:\"5432\"`\n\tDBUser            string `envconfig:\"DB_USER\" default:\"postgres\"`\n\tDBPassword        string `envconfig:\"DB_PASSWORD\" default:\"postgres\"`\n\tDBName            string `envconfig:\"DB_NAME\" default:\"api_template\"`\n\tDBSSLMode         string `envconfig:\"DB_SSL_MODE\" default:\"disable\"`\n\tDBMaxIdleConns    int    `envconfig:\"DB_MAX_IDLE_CONNS\" default:\"10\"`\n\tDBMaxOpenConns    int    `envconfig:\"DB_MAX_OPEN_CONNS\" default:\"100\"`\n\tDBConnMaxLifetime string `envconfig:\"DB_CONN_MAX_LIFETIME\" default:\"1h\"`\n\n\t// Service Identity\n\tServiceName    string `envconfig:\"SERVICE_NAME\" default:\"api-template\"`\n\tServiceVersion string `envconfig:\"SERVICE_VERSION\" default:\"1.0.0\"`\n\tServiceID      string `envconfig:\"SERVICE_ID\" default:\"\"`\n\n\t// Logging Configuration\n\tLogLevel    string `envconfig:\"LOG_LEVEL\" default:\"info\"`\n\tEnvironment string `envconfig:\"ENVIRONMENT\" default:\"development\"`\n\n\t// Security Configuration\n\tSessionSecret string `envconfig:\"SESSION_SECRET\" default:\"development-secret-key\"`\n\tJWTSecret     string `envconfig:\"JWT_SECRET\" default:\"development-jwt-secret\"`\n\tJWTExpiration string `envconfig:\"JWT_EXPIRATION\" default:\"24h\"`\n\n\t// Rate Limiting Configuration\n\tRateLimitRPS   float64 `envconfig:\"RATE_LIMIT_RPS\" default:\"100\"`\n\tRateLimitBurst int     `envconfig:\"RATE_LIMIT_BURST\" default:\"200\"`\n\n\t// Circuit Breaker Configuration\n\tCircuitBreakerTimeout          string `envconfig:\"CIRCUIT_BREAKER_TIMEOUT\" default:\"60s\"`\n\tCircuitBreakerMaxRequests      int    `envconfig:\"CIRCUIT_BREAKER_MAX_REQUESTS\" default:\"3\"`\n\tCircuitBreakerInterval         string `envconfig:\"CIRCUIT_BREAKER_INTERVAL\" default:\"10s\"`\n\tCircuitBreakerFailureThreshold int    `envconfig:\"CIRCUIT_BREAKER_FAILURE_THRESHOLD\" default:\"3\"`\n\n\t// Inter-Service Communication\n\tServiceDiscoveryURL   string `envconfig:\"SERVICE_DISCOVERY_URL\" default:\"\"`\n\tDefaultRequestTimeout string `envconfig:\"DEFAULT_REQUEST_TIMEOUT\" default:\"30s\"`\n\n\t// Observability\n\tMetricsEnabled    bool    `envconfig:\"METRICS_ENABLED\" default:\"true\"`\n\tTracingEnabled    bool    `envconfig:\"TRACING_ENABLED\" default:\"false\"`\n\tTracingEndpoint   string  `envconfig:\"TRACING_ENDPOINT\" default:\"\"`\n\tTracingSampleRate float64 `envconfig:\"TRACING_SAMPLE_RATE\" default:\"0.1\"`\n}\n\nfunc Load() (*Config, error) {\n\tvar cfg Config\n\tif err := envconfig.Process(\"\", \u0026cfg); err != nil {\n\t\treturn nil, fmt.Errorf(\"failed to load config: %w\", err)\n\t}\n\treturn \u0026cfg, nil\n}\n\nfunc (c *Config) DatabaseDSN() string {\n\thost := c.DBHost\n\tif host == \"localhost\" {\n\t\thost = \"127.0.0.1\"\n\t}\n\n\treturn fmt.Sprintf(\"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s\",\n\t\thost, c.DBPort, c.DBUser, c.DBPassword, c.DBName, c.DBSSLMode)\n}\n\nfunc (c *Config) IsDevelopment() bool {\n\treturn c.Environment == \"development\"\n}\n\nfunc (c *Config) IsProduction() bool {\n\treturn c.Environment == \"production\"\n}\n\nfunc (c *Config) JWTExpirationDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.JWTExpiration)\n\tif err != nil {\n\t\treturn 24 * time.Hour // fallback to 24 hours\n\t}\n\treturn duration\n}\n\nfunc (c *Config) ReadTimeoutDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.ReadTimeout)\n\tif err != nil {\n\t\treturn 15 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) WriteTimeoutDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.WriteTimeout)\n\tif err != nil {\n\t\treturn 15 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) IdleTimeoutDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.IdleTimeout)\n\tif err != nil {\n\t\treturn 60 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) DBConnMaxLifetimeDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.DBConnMaxLifetime)\n\tif err != nil {\n\t\treturn time.Hour\n\t}\n\treturn duration\n}\n\nfunc (c *Config) CircuitBreakerTimeoutDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.CircuitBreakerTimeout)\n\tif err != nil {\n\t\treturn 60 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) CircuitBreakerIntervalDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.CircuitBreakerInterval)\n\tif err != nil {\n\t\treturn 10 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) DefaultRequestTimeoutDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.DefaultRequestTimeout)\n\tif err != nil {\n\t\treturn 30 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) GetServiceID() string {\n\tif c.ServiceID == \"\" {\n\t\t// Generate a unique service ID if not provided\n\t\treturn fmt.Sprintf(\"%s-%d\", c.ServiceName, time.Now().Unix())\n\t}\n\treturn c.ServiceID\n}\n",
-      "size": 5074,
-      "hash": "f341dcdf64d0b169e266c2abb98d05de711c88f1f11072207f81ceb74604d6b9",
+      "content": "package config\n\nimport (\n\t\"fmt\"\n\t\"time\"\n\n\t\"github.com/kelseyhightower/envconfig\"\n)\n\ntype Config struct {\n\t// HTTP Server Configuration\n\tHTTPAddr     string `envconfig:\"HTTP_ADDR\" default:\":8080\"`       // Server listen address and port\n\tReadTimeout  string `envconfig:\"READ_TIMEOUT\" default:\"15s\"`       // Maximum duration for reading the entire request\n\tWriteTimeout string `envconfig:\"WRITE_TIMEOUT\" default:\"15s\"`      // Maximum duration before timing out writes of the response\n\tIdleTimeout  string `envconfig:\"IDLE_TIMEOUT\" default:\"60s\"`       // Maximum time to wait for the next request when keep-alives are enabled\n\n\t// Database Configuration (optional for some microservices)\n\tDBHost            string `envconfig:\"DB_HOST\" default:\"localhost\"`    // Database host address\n\tDBPort            string `envconfig:\"DB_PORT\" default:\"5432\"`         // Database port number\n\tDBUser            string `envconfig:\"DB_USER\" default:\"postgres\"`     // Database username for authentication\n\tDBPassword        string `envconfig:\"DB_PASSWORD\" default:\"postgres\"` // Database password for authentication\n\tDBName            string `envconfig:\"DB_NAME\" default:\"api_template\"` // Database name to connect to\n\tDBSSLMode         string `envconfig:\"DB_SSL_MODE\" default:\"disable\"`  // SSL mode for database connection (disable, require, verify-ca, verify-full)\n\tDBMaxIdleConns    int    `envconfig:\"DB_MAX_IDLE_CONNS\" default:\"10\"`  // Maximum number of idle connections in the pool\n\tDBMaxOpenConns    int    `envconfig:\"DB_MAX_OPEN_CONNS\" default:\"100\"` // Maximum number of open connections to the database\n\tDBConnMaxLifetime string `envconfig:\"DB_CONN_MAX_LIFETIME\" default:\"1h\"` // Maximum amount of time a connection may be reused\n\n\t// Service Identity\n\tServiceName    string `envconfig:\"SERVICE_NAME\" default:\"api-template\"` // Name of this service for identification and logging\n\tServiceVersion string `envconfig:\"SERVICE_VERSION\" default:\"1.0.0\"`     // Version of this service for tracking and compatibility\n\tServiceID      string `envconfig:\"SERVICE_ID\" default:\"\"`              // Unique identifier for this service instance (auto-generated if empty)\n\n\t// Logging Configuration\n\tLogLevel    string `envconfig:\"LOG_LEVEL\" default:\"info\"`        // Log level (debug, info, warn, error)\n\tEnvironment string `envconfig:\"ENVIRONMENT\" default:\"development\"` // Application environment (development, staging, production)\n\n\t// Security Configuration\n\tJWTSecret     string `envconfig:\"JWT_SECRET\" default:\"development-jwt-secret\"` // Secret key for signing JWT tokens\n\tJWTExpiration string `envconfig:\"JWT_EXPIRATION\" default:\"24h\"`                // JWT token expiration duration\n\n\t// Observability\n\tMetricsEnabled bool `envconfig:\"METRICS_ENABLED\" default:\"true\"` // Enable Prometheus metrics collection and /metrics endpoint\n}\n\nfunc Load() (*Config, error) {\n\tvar cfg Config\n\tif err := envconfig.Process(\"\", \u0026cfg); err != nil {\n\t\treturn nil, fmt.Errorf(\"failed to load config: %w\", err)\n\t}\n\treturn \u0026cfg, nil\n}\n\nfunc (c *Config) DatabaseDSN() string {\n\thost := c.DBHost\n\tif host == \"localhost\" {\n\t\thost = \"127.0.0.1\"\n\t}\n\n\treturn fmt.Sprintf(\"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s\",\n\t\thost, c.DBPort, c.DBUser, c.DBPassword, c.DBName, c.DBSSLMode)\n}\n\nfunc (c *Config) IsDevelopment() bool {\n\treturn c.Environment == \"development\"\n}\n\nfunc (c *Config) IsProduction() bool {\n\treturn c.Environment == \"production\"\n}\n\nfunc (c *Config) JWTExpirationDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.JWTExpiration)\n\tif err != nil {\n\t\treturn 24 * time.Hour // fallback to 24 hours\n\t}\n\treturn duration\n}\n\nfunc (c *Config) ReadTimeoutDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.ReadTimeout)\n\tif err != nil {\n\t\treturn 15 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) WriteTimeoutDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.WriteTimeout)\n\tif err != nil {\n\t\treturn 15 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) IdleTimeoutDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.IdleTimeout)\n\tif err != nil {\n\t\treturn 60 * time.Second\n\t}\n\treturn duration\n}\n\nfunc (c *Config) DBConnMaxLifetimeDuration() time.Duration {\n\tduration, err := time.ParseDuration(c.DBConnMaxLifetime)\n\tif err != nil {\n\t\treturn time.Hour\n\t}\n\treturn duration\n}\n\n\nfunc (c *Config) GetServiceID() string {\n\tif c.ServiceID == \"\" {\n\t\t// Generate a unique service ID if not provided\n\t\treturn fmt.Sprintf(\"%s-%d\", c.ServiceName, time.Now().Unix())\n\t}\n\treturn c.ServiceID\n}\n",
+      "size": 4530,
+      "hash": "8e7cf0f2c4905ee69f86832599f5b852ed17834f5bc2e26f41de0017576f04a6",
       "mappings": [
         {
           "find": "ServiceName    string `envconfig:\"SERVICE_NAME\" default:\"api-template\"`",
@@ -463,5 +484,111 @@
       "go build"
     ]
   },
-  "hash": "b373eb370dcd1bb20d9887dae003f54427f90ad67db9a524591390ff0261e329"
+  "hash": "1b1887c4623584495a893e4944d8e63ff964f663e627a1538fb7b4c368937578",
+  "env_config": [
+    {
+      "name": "HTTP_ADDR",
+      "description": "Server listen address and port",
+      "example": ":8080"
+    },
+    {
+      "name": "READ_TIMEOUT",
+      "description": "Maximum duration for reading the entire request",
+      "example": "15s"
+    },
+    {
+      "name": "WRITE_TIMEOUT",
+      "description": "Maximum duration before timing out writes of the response",
+      "example": "15s"
+    },
+    {
+      "name": "IDLE_TIMEOUT",
+      "description": "Maximum time to wait for the next request when keep-alives are enabled",
+      "example": "60s"
+    },
+    {
+      "name": "DB_HOST",
+      "description": "Database host address",
+      "example": "localhost"
+    },
+    {
+      "name": "DB_PORT",
+      "description": "Database port number",
+      "example": "5432"
+    },
+    {
+      "name": "DB_USER",
+      "description": "Database username for authentication",
+      "example": "postgres"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "description": "Database password for authentication",
+      "example": "postgres"
+    },
+    {
+      "name": "DB_NAME",
+      "description": "Database name to connect to",
+      "example": "api_template"
+    },
+    {
+      "name": "DB_SSL_MODE",
+      "description": "SSL mode for database connection (disable, require, verify-ca, verify-full)",
+      "example": "disable"
+    },
+    {
+      "name": "DB_MAX_IDLE_CONNS",
+      "description": "Maximum number of idle connections in the pool",
+      "example": "10"
+    },
+    {
+      "name": "DB_MAX_OPEN_CONNS",
+      "description": "Maximum number of open connections to the database",
+      "example": "100"
+    },
+    {
+      "name": "DB_CONN_MAX_LIFETIME",
+      "description": "Maximum amount of time a connection may be reused",
+      "example": "1h"
+    },
+    {
+      "name": "SERVICE_NAME",
+      "description": "Name of this service for identification and logging",
+      "example": "api-template"
+    },
+    {
+      "name": "SERVICE_VERSION",
+      "description": "Version of this service for tracking and compatibility",
+      "example": "1.0.0"
+    },
+    {
+      "name": "SERVICE_ID",
+      "description": "Unique identifier for this service instance (auto-generated if empty)"
+    },
+    {
+      "name": "LOG_LEVEL",
+      "description": "Log level (debug, info, warn, error)",
+      "example": "info"
+    },
+    {
+      "name": "ENVIRONMENT",
+      "description": "Application environment (development, staging, production)",
+      "example": "development"
+    },
+    {
+      "name": "JWT_SECRET",
+      "description": "Secret key for signing JWT tokens (CHANGE IN PRODUCTION!)",
+      "example": "your-jwt-secret-key"
+    },
+    {
+      "name": "JWT_EXPIRATION",
+      "description": "JWT token expiration duration",
+      "example": "24h"
+    },
+    {
+      "name": "METRICS_ENABLED",
+      "description": "Enable Prometheus metrics collection and /metrics endpoint",
+      "example": "true"
+    }
+  ]
 }

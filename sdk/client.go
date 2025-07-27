@@ -225,6 +225,16 @@ func (c *Client) GetTemplateVariables(templateName string) (map[string]Variable,
 	return sdkVariables, nil
 }
 
+// GetTemplateEnvConfig returns the environment configuration for a specific template
+func (c *Client) GetTemplateEnvConfig(templateName string) ([]core.EnvVariable, error) {
+	schema, exists := c.templates[templateName]
+	if !exists {
+		return nil, newTemplateTypeError("GetTemplateEnvConfig", templateName)
+	}
+
+	return schema.EnvConfig, nil
+}
+
 // Variables contains template variables
 type Variables struct {
 	ProjectName string

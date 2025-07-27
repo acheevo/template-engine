@@ -161,20 +161,33 @@ func (f *FrontendTemplate) ShouldTemplate(filePath string) bool {
 
 // ShouldSkip determines if a file should be skipped during extraction
 func (f *FrontendTemplate) ShouldSkip(filePath string) bool {
-	skipPatterns := []string{
-		"node_modules",
-		".git",
-		".next",
-		"build",
-		"dist",
-		".DS_Store",
-		"coverage",
-		".nyc_output",
-		".cache",
+	// Always include .github directories and their contents
+	if strings.Contains(filePath, ".github") {
+		return false
 	}
 
-	for _, pattern := range skipPatterns {
-		if strings.Contains(filePath, pattern) {
+	// Skip .git directory and all its contents
+	if strings.Contains(filePath, ".git") && !strings.Contains(filePath, ".github") {
+		return true
+	}
+
+	baseName := filepath.Base(filePath)
+
+	// Skip other hidden files/directories (starting with .) except .github
+	if strings.HasPrefix(baseName, ".") && baseName != ".github" && !strings.Contains(filePath, ".github") {
+		return true
+	}
+
+	// Skip specific directories
+	skipDirs := []string{
+		"node_modules",
+		"build",
+		"dist",
+		"coverage",
+	}
+
+	for _, dir := range skipDirs {
+		if baseName == dir {
 			return true
 		}
 	}
@@ -341,20 +354,40 @@ func (g *GoAPITemplate) ShouldTemplate(filePath string) bool {
 
 // ShouldSkip determines if a file should be skipped during extraction
 func (g *GoAPITemplate) ShouldSkip(filePath string) bool {
-	skipPatterns := []string{
-		".git",
+	// Always include .github directories and their contents
+	if strings.Contains(filePath, ".github") {
+		return false
+	}
+
+	// Skip .git directory and all its contents
+	if strings.Contains(filePath, ".git") && !strings.Contains(filePath, ".github") {
+		return true
+	}
+
+	baseName := filepath.Base(filePath)
+
+	// Skip other hidden files/directories (starting with .) except .github
+	if strings.HasPrefix(baseName, ".") && baseName != ".github" && !strings.Contains(filePath, ".github") {
+		return true
+	}
+
+	// Skip specific directories
+	skipDirs := []string{
 		"vendor",
 		"bin",
 		"tmp",
-		".DS_Store",
 		"coverage",
-		"*.log",
 	}
 
-	for _, pattern := range skipPatterns {
-		if strings.Contains(filePath, pattern) {
+	for _, dir := range skipDirs {
+		if baseName == dir {
 			return true
 		}
+	}
+
+	// Skip file patterns
+	if strings.HasSuffix(baseName, ".log") {
+		return true
 	}
 
 	return false

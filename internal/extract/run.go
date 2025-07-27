@@ -8,6 +8,16 @@ import (
 	"github.com/acheevo/template-engine/internal/core"
 )
 
+func RunWithParams(sourceDir, outputFile, templateType string) error {
+	if templateType == "" {
+		return fmt.Errorf("--type flag is required. Available types: %v", core.ListTemplates())
+	}
+
+	fmt.Printf("Extracting %s template from %s to %s\n", templateType, sourceDir, outputFile)
+
+	return extract(sourceDir, outputFile, templateType)
+}
+
 func Run() error {
 	args := os.Args[2:]
 
@@ -39,13 +49,7 @@ func Run() error {
 		}
 	}
 
-	if templateType == "" {
-		return fmt.Errorf("--type flag is required. Available types: %v", core.ListTemplates())
-	}
-
-	fmt.Printf("Extracting %s template from %s to %s\n", templateType, sourceDir, outputFile)
-
-	return extract(sourceDir, outputFile, templateType)
+	return RunWithParams(sourceDir, outputFile, templateType)
 }
 
 func extract(sourceDir, outputFile, templateType string) error {

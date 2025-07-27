@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/acheevo/template-engine/internal/core"
+	"github.com/acheevo/template-engine/internal/envparser"
 )
 
 // FrontendTemplate implements TemplateType for React/frontend projects
@@ -27,6 +28,7 @@ func (f *FrontendTemplate) Extract(sourceDir string) (*core.TemplateSchema, erro
 		Description: "React TypeScript frontend template with Tailwind CSS",
 		Variables:   f.GetVariables(),
 		Files:       []core.FileSpec{},
+		EnvConfig:   []core.EnvVariable{}, // Initialize as empty slice
 		Hooks: map[string][]string{
 			"post_generate": {"npm install"},
 		},
@@ -86,6 +88,15 @@ func (f *FrontendTemplate) Extract(sourceDir string) (*core.TemplateSchema, erro
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	// Parse .env.example if it exists
+	envExamplePath := filepath.Join(sourceDir, ".env.example")
+	if _, err := os.Stat(envExamplePath); err == nil {
+		envContent, err := os.ReadFile(envExamplePath)
+		if err == nil {
+			schema.EnvConfig = envparser.ParseEnvExample(string(envContent))
+		}
 	}
 
 	// Calculate schema hash
@@ -169,25 +180,13 @@ func (f *FrontendTemplate) ShouldTemplate(filePath string) bool {
 
 // ShouldSkip determines if a file/directory should be skipped during extraction
 func (f *FrontendTemplate) ShouldSkip(path string) bool {
-	skipPatterns := []string{
+	skipDirs := []string{
 		"node_modules",
-		".git",
-		".DS_Store",
 		"dist",
 		"build",
-		".env",
-		"*.log",
-		".cache",
 		"coverage",
 	}
-
-	for _, pattern := range skipPatterns {
-		if strings.Contains(path, pattern) {
-			return true
-		}
-	}
-
-	return false
+	return shouldSkipCommon(path, skipDirs)
 }
 
 // calculateSchemaHash calculates a hash for the entire schema

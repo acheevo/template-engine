@@ -8,6 +8,7 @@ A powerful and flexible template engine for generating projects from templates. 
 - **Go SDK**: Programmatic access for CI/CD and automation
 - **Built-in Templates**: Pre-configured templates for frontend and Go API projects
 - **Custom Templates**: Extract and reuse templates from existing projects
+- **Environment Configuration Discovery**: Expose `.env.example` requirements without template execution
 - **Template Management**: Reference project configuration system
 - **Interactive Mode**: Guided project creation
 
@@ -192,6 +193,62 @@ Get complete template metadata and variable structure for a specific template ty
 #### GetTemplateVariables(templateType) (map[string]Variable, error)
 Get just the variables for a specific template type.
 
+#### GetTemplateEnvConfig(templateName) ([]EnvVariable, error)
+Get environment configuration requirements for a specific template without executing it.
+
+### Environment Configuration Discovery
+
+Templates can include `.env.example` files that define environment variables and configuration requirements. You can discover these without executing the template:
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    
+    "github.com/acheevo/template-engine/sdk"
+)
+
+func main() {
+    client := sdk.New()
+    
+    // Register a template that includes .env.example
+    err := client.RegisterTemplate("examples/templates/api-template.json")
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    // Get environment configuration requirements
+    envConfig, err := client.GetTemplateEnvConfig("go-api-template")
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    fmt.Printf("Template requires %d environment variables:\n", len(envConfig))
+    
+    for _, envVar := range envConfig {
+        fmt.Printf("• %s: %s\n", envVar.Name, envVar.Description)
+        if envVar.Example != "" {
+            fmt.Printf("  Example: %s\n", envVar.Example)
+        }
+    }
+}
+```
+
+**Output example:**
+```
+Template requires 21 environment variables:
+• HTTP_ADDR: Server listen address and port
+  Example: :8080
+• DB_HOST: Database host address
+  Example: localhost
+• JWT_SECRET: Secret key for signing JWT tokens (CHANGE IN PRODUCTION!)
+  Example: your-jwt-secret-key
+...
+```
+
 ### Template Discovery
 
 You can programmatically discover template structures:
@@ -285,6 +342,12 @@ type Variable struct {
     Default     string `json:"default,omitempty"`
     Description string `json:"description,omitempty"`
 }
+
+type EnvVariable struct {
+    Name        string `json:"name"`
+    Description string `json:"description,omitempty"`
+    Example     string `json:"example,omitempty"`
+}
 ```
 
 ### Error Handling
@@ -358,6 +421,46 @@ echo "Frontend: cd local-frontend && npm install && npm run dev"
 echo "API: cd local-api && go mod tidy && make run"
 ```
 
+### Environment Configuration Validation
+```go
+// Validate environment configuration before deployment
+func validateEnvironmentConfig(templateName string, configValues map[string]string) error {
+    client := sdk.New()
+    
+    // Get required environment variables from template
+    envConfig, err := client.GetTemplateEnvConfig(templateName)
+    if err != nil {
+        return fmt.Errorf("failed to get env config: %w", err)
+    }
+    
+    // Check that all required variables are provided
+    var missing []string
+    for _, envVar := range envConfig {
+        if _, exists := configValues[envVar.Name]; !exists {
+            missing = append(missing, envVar.Name)
+        }
+    }
+    
+    if len(missing) > 0 {
+        return fmt.Errorf("missing required environment variables: %v", missing)
+    }
+    
+    return nil
+}
+
+// Usage in CI/CD pipeline
+func deployService(env string) error {
+    configValues := loadEnvironmentConfig(env) // Load from vault/secrets
+    
+    if err := validateEnvironmentConfig("go-api-template", configValues); err != nil {
+        return fmt.Errorf("environment validation failed: %w", err)
+    }
+    
+    // Proceed with deployment...
+    return nil
+}
+```
+
 ## Project Structure
 
 ```
@@ -395,6 +498,18 @@ Templates are JSON files with this structure:
     "GitHubRepo": "string",
     "Author": "string"
   },
+  "env_config": [
+    {
+      "name": "PORT",
+      "description": "Port for both development and production servers",
+      "example": "3000"
+    },
+    {
+      "name": "API_BASE_URL",
+      "description": "Backend API base URL",
+      "example": "http://localhost:8000/api"
+    }
+  ],
   "files": [
     {
       "path": "package.json",
@@ -409,6 +524,16 @@ Templates are JSON files with this structure:
   ]
 }
 ```
+
+### Environment Configuration
+
+Templates automatically include environment configuration from `.env.example` files found in the source project. The `env_config` field contains:
+
+- **name**: Environment variable name
+- **description**: Human-readable description (from comments in .env.example)
+- **example**: Example value from the .env.example file
+
+This allows you to understand what environment variables a template needs before generating a project.
 
 ## Configuration
 

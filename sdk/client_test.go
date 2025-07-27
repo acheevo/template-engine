@@ -591,3 +591,119 @@ func TestValidate(t *testing.T) {
 		})
 	}
 }
+
+func TestGetTemplateEnvConfig(t *testing.T) {
+	client := New()
+
+	// Create a test template with environment configuration
+	testTemplate := &core.TemplateSchema{
+		Name:        "test-template",
+		Type:        "test",
+		Version:     "1.0.0",
+		Description: "Test template with env config",
+		Variables: map[string]core.Variable{
+			"ProjectName": {Type: "string", Required: true},
+		},
+		Files: []core.FileSpec{
+			{Path: "test.txt", Content: "test", Template: false},
+		},
+		EnvConfig: []core.EnvVariable{
+			{Name: "DB_HOST", Description: "Database host", Example: "localhost"},
+			{Name: "DB_PORT", Description: "Database port", Example: "5432"},
+			{Name: "API_KEY", Description: "API key for external service", Example: "your-api-key"},
+		},
+	}
+
+	// Register the test template
+	client.templates["test-template"] = testTemplate
+
+	tests := []struct {
+		name         string
+		templateName string
+		wantErr      bool
+		expectedLen  int
+	}{
+		{
+			name:         "valid template with env config",
+			templateName: "test-template",
+			wantErr:      false,
+			expectedLen:  3,
+		},
+		{
+			name:         "non-existent template",
+			templateName: "non-existent",
+			wantErr:      true,
+			expectedLen:  0,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			envConfig, err := client.GetTemplateEnvConfig(tt.templateName)
+
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetTemplateEnvConfig() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if !tt.wantErr {
+				if len(envConfig) != tt.expectedLen {
+					t.Errorf("GetTemplateEnvConfig() returned %d env vars, expected %d", len(envConfig), tt.expectedLen)
+				}
+
+				// Check specific environment variables
+				expectedVars := map[string]struct {
+					description string
+					example     string
+				}{
+					"DB_HOST": {"Database host", "localhost"},
+					"DB_PORT": {"Database port", "5432"},
+					"API_KEY": {"API key for external service", "your-api-key"},
+				}
+
+				for _, envVar := range envConfig {
+					if expected, exists := expectedVars[envVar.Name]; exists {
+						if envVar.Description != expected.description {
+							t.Errorf("EnvVar %s description = %v, expected %v", envVar.Name, envVar.Description, expected.description)
+						}
+						if envVar.Example != expected.example {
+							t.Errorf("EnvVar %s example = %v, expected %v", envVar.Name, envVar.Example, expected.example)
+						}
+					} else {
+						t.Errorf("Unexpected environment variable: %s", envVar.Name)
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestGetTemplateEnvConfigEmptyConfig(t *testing.T) {
+	client := New()
+
+	// Create a test template without environment configuration
+	testTemplate := &core.TemplateSchema{
+		Name:        "empty-env-template",
+		Type:        "test",
+		Version:     "1.0.0",
+		Description: "Test template without env config",
+		Variables: map[string]core.Variable{
+			"ProjectName": {Type: "string", Required: true},
+		},
+		Files: []core.FileSpec{
+			{Path: "test.txt", Content: "test", Template: false},
+		},
+		EnvConfig: []core.EnvVariable{}, // Empty env config
+	}
+
+	client.templates["empty-env-template"] = testTemplate
+
+	envConfig, err := client.GetTemplateEnvConfig("empty-env-template")
+	if err != nil {
+		t.Errorf("GetTemplateEnvConfig() unexpected error = %v", err)
+	}
+
+	if len(envConfig) != 0 {
+		t.Errorf("GetTemplateEnvConfig() returned %d env vars, expected 0", len(envConfig))
+	}
+}

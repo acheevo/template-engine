@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/acheevo/template-engine/internal/core"
+	"github.com/acheevo/template-engine/internal/envparser"
 )
 
 // GoAPITemplate implements TemplateType for Go API projects
@@ -27,6 +28,7 @@ func (g *GoAPITemplate) Extract(sourceDir string) (*core.TemplateSchema, error) 
 		Description: "Go REST API template with Gin and PostgreSQL",
 		Variables:   g.GetVariables(),
 		Files:       []core.FileSpec{},
+		EnvConfig:   []core.EnvVariable{}, // Initialize as empty slice
 		Hooks: map[string][]string{
 			"post_generate": {"go mod tidy", "go build"},
 		},
@@ -78,6 +80,15 @@ func (g *GoAPITemplate) Extract(sourceDir string) (*core.TemplateSchema, error) 
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	// Parse .env.example if it exists
+	envExamplePath := filepath.Join(sourceDir, ".env.example")
+	if _, err := os.Stat(envExamplePath); err == nil {
+		envContent, err := os.ReadFile(envExamplePath)
+		if err == nil {
+			schema.EnvConfig = envparser.ParseEnvExample(string(envContent))
+		}
 	}
 
 	// Calculate schema hash
@@ -192,24 +203,13 @@ func (g *GoAPITemplate) ShouldTemplate(filePath string) bool {
 
 // ShouldSkip determines if a file/directory should be skipped during extraction
 func (g *GoAPITemplate) ShouldSkip(path string) bool {
-	skipPatterns := []string{
-		".git",
-		".DS_Store",
+	skipDirs := []string{
 		"vendor",
 		"bin",
 		"tmp",
-		"*.log",
-		".env",
-		"coverage.out",
+		"coverage",
 	}
-
-	for _, pattern := range skipPatterns {
-		if strings.Contains(path, pattern) {
-			return true
-		}
-	}
-
-	return false
+	return shouldSkipCommon(path, skipDirs)
 }
 
 // calculateSchemaHash calculates a hash for the entire schema

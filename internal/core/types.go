@@ -10,6 +10,7 @@ type TemplateSchema struct {
 	Files       []FileSpec          `json:"files"`
 	Hooks       map[string][]string `json:"hooks,omitempty"`
 	Hash        string              `json:"hash,omitempty"`
+	EnvConfig   []EnvVariable       `json:"env_config,omitempty"`
 }
 
 // Variable represents a template variable definition
@@ -18,6 +19,13 @@ type Variable struct {
 	Required    bool   `json:"required"`
 	Default     string `json:"default,omitempty"`
 	Description string `json:"description,omitempty"`
+}
+
+// EnvVariable represents an environment variable from .env.example
+type EnvVariable struct {
+	Name        string `json:"name"`
+	Description string `json:"description,omitempty"`
+	Example     string `json:"example,omitempty"`
 }
 
 // FileSpec represents a file in the template (go-fsck pattern: all content embedded)
