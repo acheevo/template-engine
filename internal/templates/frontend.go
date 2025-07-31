@@ -118,7 +118,7 @@ func (f *FrontendTemplate) GetMappings(filePath string) []core.Mapping {
 			{Find: "'Frontend Template'", Replace: "'{{.ProjectName}}'"},
 			{Find: "'Your Name'", Replace: "'{{.Author}}'"},
 		}
-	case "README.md":
+	case ReadmeFile:
 		return []core.Mapping{
 			{Find: "# Frontend Template", Replace: "# {{.ProjectName}}"},
 			{Find: "https://github.com/your-username/frontend-template", Replace: "https://github.com/{{.GitHubRepo}}"},
@@ -164,7 +164,7 @@ func (f *FrontendTemplate) GetVariables() map[string]core.Variable {
 func (f *FrontendTemplate) ShouldTemplate(filePath string) bool {
 	templatedFiles := []string{
 		"package.json",
-		"README.md",
+		ReadmeFile,
 		"src/config/app.ts",
 		"index.html",
 	}
@@ -180,6 +180,31 @@ func (f *FrontendTemplate) ShouldTemplate(filePath string) bool {
 
 // ShouldSkip determines if a file/directory should be skipped during extraction
 func (f *FrontendTemplate) ShouldSkip(path string) bool {
+	baseName := filepath.Base(path)
+
+	// Always include important frontend dotfiles
+	importantDotfiles := []string{
+		".eslintrc.cjs",
+		".eslintrc.js",
+		".eslintrc.json",
+		".prettierrc",
+		".prettierrc.json",
+		".dockerignore",
+		".gitignore",
+		".env.example",
+	}
+
+	for _, dotfile := range importantDotfiles {
+		if baseName == dotfile {
+			return false
+		}
+	}
+
+	// Always include .claude directory and its contents
+	if strings.Contains(path, ".claude") {
+		return false
+	}
+
 	skipDirs := []string{
 		"node_modules",
 		"dist",

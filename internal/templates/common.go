@@ -5,6 +5,11 @@ import (
 	"strings"
 )
 
+// Common template file names
+const (
+	ReadmeFile = "README.md"
+)
+
 // shouldSkipCommon contains common logic for skipping files during template extraction
 func shouldSkipCommon(path string, skipDirs []string) bool {
 	// Always include .github directories and their contents
@@ -24,9 +29,11 @@ func shouldSkipCommon(path string, skipDirs []string) bool {
 		return true
 	}
 
-	// Skip specific directories
+	// Skip specific directories (check if directory appears anywhere in path)
 	for _, dir := range skipDirs {
-		if baseName == dir {
+		if strings.Contains(path, string(filepath.Separator)+dir+string(filepath.Separator)) ||
+			strings.HasSuffix(path, string(filepath.Separator)+dir) ||
+			strings.HasPrefix(path, dir+string(filepath.Separator)) {
 			return true
 		}
 	}

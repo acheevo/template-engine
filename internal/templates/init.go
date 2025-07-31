@@ -12,6 +12,9 @@ func init() {
 	// Register Go API template
 	core.RegisterTemplate(&GoAPITemplate{})
 
+	// Register Fullstack template
+	core.RegisterTemplate(&FullstackTemplate{})
+
 	// Future template types will be registered here:
 	// core.RegisterTemplate(&MobileTemplate{})
 }

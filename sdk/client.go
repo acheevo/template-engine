@@ -8,6 +8,7 @@ import (
 
 	"github.com/acheevo/template-engine/internal/core"
 	"github.com/acheevo/template-engine/internal/generate"
+	_ "github.com/acheevo/template-engine/internal/templates" // Import to register templates
 )
 
 // Client provides programmatic access to the template engine
@@ -40,14 +41,26 @@ type ExtractOptions struct {
 	OutputDir string // Optional: directory to save template file
 }
 
-// Generate creates a new project from a registered template
+// Generate creates a new project from a registered template schema
+// Note: This method works with pre-registered template schemas, not template types.
+// For template types, use ExtractAndGenerate() workflow instead.
 func (c *Client) Generate(ctx context.Context, opts GenerateOptions) error {
 	if err := c.ValidateGenerateOptions(opts); err != nil {
 		return err
 	}
 
-	// Get template schema
+	// Get template schema - try by name first, then by type
 	schema, exists := c.templates[opts.Template]
+	if !exists {
+		// Try to find by template type
+		for _, s := range c.templates {
+			if s.Type == opts.Template {
+				schema = s
+				exists = true
+				break
+			}
+		}
+	}
 	if !exists {
 		return newTemplateTypeError("Generate", opts.Template)
 	}
@@ -140,7 +153,9 @@ func (c *Client) Validate(schema *core.TemplateSchema) error {
 	return core.ValidateSchema(schema)
 }
 
-// RegisterTemplate registers a template from a JSON file
+// RegisterTemplate registers a template schema from a JSON file for use with Generate()
+// This is for working with pre-extracted template schema files, not template types.
+// Template types are automatically registered via the global registry.
 func (c *Client) RegisterTemplate(templatePath string) error {
 	// Check if template file exists
 	if _, err := os.Stat(templatePath); os.IsNotExist(err) {
@@ -163,31 +178,32 @@ func (c *Client) RegisterTemplate(templatePath string) error {
 		return newSchemaError("RegisterTemplate", "invalid template schema", err)
 	}
 
-	// Register the template using its name
+	// Register the template using its name in the client's local cache
+	// This is separate from the global template type registry
 	c.templates[schema.Name] = &schema
 
 	return nil
 }
 
-// ListTemplates returns available template names and descriptions
-func (c *Client) ListTemplates() map[string]string {
-	templates := make(map[string]string)
-	for name, schema := range c.templates {
-		templates[name] = schema.Description
-	}
-	return templates
+// ListTemplates returns available template types from the global registry
+func (c *Client) ListTemplates() []string {
+	return core.ListTemplates()
 }
 
-// GetTemplateInfo returns the structure and metadata for a specific template
-func (c *Client) GetTemplateInfo(templateName string) (*TemplateInfo, error) {
-	schema, exists := c.templates[templateName]
-	if !exists {
-		return nil, newTemplateTypeError("GetTemplateInfo", templateName)
+// GetTemplateInfo returns the structure and metadata for a specific template type
+func (c *Client) GetTemplateInfo(templateType string) (*TemplateInfo, error) {
+	// Get template type from global registry
+	tmpl, err := core.GetTemplate(templateType)
+	if err != nil {
+		return nil, newTemplateTypeError("GetTemplateInfo", templateType)
 	}
+
+	// Get variables from template type
+	coreVariables := tmpl.GetVariables()
 
 	// Convert core.Variable map to SDK Variable map
 	sdkVariables := make(map[string]Variable)
-	for name, coreVar := range schema.Variables {
+	for name, coreVar := range coreVariables {
 		sdkVariables[name] = Variable{
 			Type:        coreVar.Type,
 			Required:    coreVar.Required,
@@ -197,23 +213,27 @@ func (c *Client) GetTemplateInfo(templateName string) (*TemplateInfo, error) {
 	}
 
 	return &TemplateInfo{
-		Name:        schema.Name,
-		Type:        schema.Type,
-		Description: schema.Description,
+		Name:        tmpl.Name(),
+		Type:        tmpl.Name(), // Template types use Name() as their type
+		Description: fmt.Sprintf("%s template", tmpl.Name()),
 		Variables:   sdkVariables,
 	}, nil
 }
 
-// GetTemplateVariables returns just the variables for a specific template
-func (c *Client) GetTemplateVariables(templateName string) (map[string]Variable, error) {
-	schema, exists := c.templates[templateName]
-	if !exists {
-		return nil, newTemplateTypeError("GetTemplateVariables", templateName)
+// GetTemplateVariables returns just the variables for a specific template type
+func (c *Client) GetTemplateVariables(templateType string) (map[string]Variable, error) {
+	// Get template type from global registry
+	tmpl, err := core.GetTemplate(templateType)
+	if err != nil {
+		return nil, newTemplateTypeError("GetTemplateVariables", templateType)
 	}
+
+	// Get variables from template type
+	coreVariables := tmpl.GetVariables()
 
 	// Convert core.Variable map to SDK Variable map
 	sdkVariables := make(map[string]Variable)
-	for name, coreVar := range schema.Variables {
+	for name, coreVar := range coreVariables {
 		sdkVariables[name] = Variable{
 			Type:        coreVar.Type,
 			Required:    coreVar.Required,
@@ -225,7 +245,8 @@ func (c *Client) GetTemplateVariables(templateName string) (map[string]Variable,
 	return sdkVariables, nil
 }
 
-// GetTemplateEnvConfig returns the environment configuration for a specific template
+// GetTemplateEnvConfig returns the environment configuration for a specific template schema file
+// Note: Environment configuration is only available in extracted template schemas, not template types
 func (c *Client) GetTemplateEnvConfig(templateName string) ([]core.EnvVariable, error) {
 	schema, exists := c.templates[templateName]
 	if !exists {

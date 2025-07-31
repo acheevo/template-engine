@@ -5,6 +5,17 @@ import (
 	"os"
 )
 
+// RunWithParams generates a project with specified parameters (called by cobra command)
+func RunWithParams(templateFile, outputDir, projectName, githubRepo string) error {
+	fmt.Printf("Generating project from %s\n", templateFile)
+	fmt.Printf("Project name: %s\n", projectName)
+	fmt.Printf("GitHub repo: %s\n", githubRepo)
+	fmt.Printf("Output dir: %s\n", outputDir)
+
+	return generate(templateFile, outputDir, projectName, githubRepo)
+}
+
+// Run generates a project using command line argument parsing (legacy)
 func Run() error {
 	args := os.Args[2:]
 

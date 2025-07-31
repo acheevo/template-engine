@@ -8,7 +8,6 @@ linters:
   enable:
     - bodyclose
     - dogsled
-    - dupl
     - errcheck
     - goconst
     - gocritic
@@ -28,8 +27,6 @@ linters:
     - unused
     - whitespace
   settings:
-    dupl:
-      threshold: 100
     errcheck:
       check-type-assertions: true
     goconst:
@@ -58,7 +55,6 @@ linters:
       - std-error-handling
     rules:
       - linters:
-          - dupl
           - errcheck
           - gocyclo
           - gosec

@@ -371,16 +371,17 @@ func TestListTemplates(t *testing.T) {
 		t.Error("Expected non-nil templates slice")
 	}
 
-	// Test with mock client
-	mockClient := createMockClient()
-	mockTemplates := mockClient.ListTemplates()
+	// Test with real client (uses global registry)
+	realClient := New()
+	realTemplates := realClient.ListTemplates()
 
-	if len(mockTemplates) != 2 {
-		t.Errorf("Expected 2 mock templates, got %d", len(mockTemplates))
+	// Should contain the registered template types
+	expectedTypes := map[string]bool{"frontend": true, "go-api": true, "fullstack": true}
+	if len(realTemplates) != len(expectedTypes) {
+		t.Errorf("Expected %d templates, got %d", len(expectedTypes), len(realTemplates))
 	}
 
-	expectedTypes := map[string]bool{"mock-frontend": true, "mock-api": true}
-	for templateName := range mockTemplates {
+	for _, templateName := range realTemplates {
 		if !expectedTypes[templateName] {
 			t.Errorf("Unexpected template name: %q", templateName)
 		}
@@ -406,7 +407,7 @@ func TestExtractWithMockTemplate(t *testing.T) {
 }
 
 func TestGetTemplateInfo(t *testing.T) {
-	client := createMockClient()
+	client := New()
 
 	tests := []struct {
 		name         string
@@ -417,10 +418,10 @@ func TestGetTemplateInfo(t *testing.T) {
 	}{
 		{
 			name:         "valid template type",
-			templateType: "mock-frontend",
+			templateType: "frontend",
 			wantErr:      false,
-			wantName:     "mock-frontend",
-			wantVarCount: 2,
+			wantName:     "frontend",
+			wantVarCount: 4, // ProjectName, GitHubRepo, Author, Description
 		},
 		{
 			name:         "invalid template type",
@@ -468,7 +469,7 @@ func TestGetTemplateInfo(t *testing.T) {
 }
 
 func TestGetTemplateVariables(t *testing.T) {
-	client := createMockClient()
+	client := New()
 
 	tests := []struct {
 		name         string
@@ -478,9 +479,9 @@ func TestGetTemplateVariables(t *testing.T) {
 	}{
 		{
 			name:         "valid template type",
-			templateType: "mock-frontend",
+			templateType: "frontend",
 			wantErr:      false,
-			wantVarCount: 2,
+			wantVarCount: 4, // ProjectName, GitHubRepo, Author, Description
 		},
 		{
 			name:         "invalid template type",

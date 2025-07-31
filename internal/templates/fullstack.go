@@ -11,26 +11,26 @@ import (
 	"github.com/acheevo/template-engine/internal/envparser"
 )
 
-// GoAPITemplate implements TemplateType for Go API projects
-type GoAPITemplate struct{}
+// FullstackTemplate implements TemplateType for fullstack projects with Go API and React frontend
+type FullstackTemplate struct{}
 
 // Name returns the template type name
-func (g *GoAPITemplate) Name() string {
-	return "go-api"
+func (f *FullstackTemplate) Name() string {
+	return "fullstack"
 }
 
-// Extract analyzes a Go API project and creates a template schema
-func (g *GoAPITemplate) Extract(sourceDir string) (*core.TemplateSchema, error) {
+// Extract analyzes a fullstack project and creates a template schema
+func (f *FullstackTemplate) Extract(sourceDir string) (*core.TemplateSchema, error) {
 	schema := &core.TemplateSchema{
-		Name:        "go-api-template",
-		Type:        "go-api",
+		Name:        "fullstack-template",
+		Type:        "fullstack",
 		Version:     "1.0.0",
-		Description: "Go REST API template with Gin and PostgreSQL",
-		Variables:   g.GetVariables(),
+		Description: "Fullstack template with Go API backend and React frontend",
+		Variables:   f.GetVariables(),
 		Files:       []core.FileSpec{},
-		EnvConfig:   []core.EnvVariable{}, // Initialize as empty slice
+		EnvConfig:   []core.EnvVariable{},
 		Hooks: map[string][]string{
-			"post_generate": {"go mod tidy", "go build"},
+			"post_generate": {"go mod tidy", "cd frontend && npm install"},
 		},
 	}
 
@@ -40,7 +40,7 @@ func (g *GoAPITemplate) Extract(sourceDir string) (*core.TemplateSchema, error) 
 		}
 
 		// Skip directories and files that should be skipped
-		if info.IsDir() || g.ShouldSkip(path) {
+		if info.IsDir() || f.ShouldSkip(path) {
 			return nil
 		}
 
@@ -49,7 +49,7 @@ func (g *GoAPITemplate) Extract(sourceDir string) (*core.TemplateSchema, error) 
 			return err
 		}
 
-		// Read file content (go-fsck pattern: always include full content)
+		// Read file content
 		content, err := os.ReadFile(path)
 		if err != nil {
 			return err
@@ -60,19 +60,19 @@ func (g *GoAPITemplate) Extract(sourceDir string) (*core.TemplateSchema, error) 
 		hashStr := hex.EncodeToString(hash[:])
 
 		// Determine if this file needs templating
-		isTemplate := g.ShouldTemplate(relPath)
+		isTemplate := f.ShouldTemplate(relPath)
 
 		fileSpec := core.FileSpec{
 			Path:     relPath,
 			Template: isTemplate,
-			Content:  string(content), // Always include full content
+			Content:  string(content),
 			Size:     info.Size(),
 			Hash:     hashStr,
 		}
 
 		// Add mappings for templated files
 		if isTemplate {
-			fileSpec.Mappings = g.GetMappings(relPath)
+			fileSpec.Mappings = f.GetMappings(relPath)
 		}
 
 		schema.Files = append(schema.Files, fileSpec)
@@ -92,56 +92,71 @@ func (g *GoAPITemplate) Extract(sourceDir string) (*core.TemplateSchema, error) 
 	}
 
 	// Calculate schema hash
-	schema.Hash = g.calculateSchemaHash(schema)
+	schema.Hash = f.calculateSchemaHash(schema)
 
 	return schema, nil
 }
 
 // GetMappings returns the string replacement mappings for a specific file
-func (g *GoAPITemplate) GetMappings(filePath string) []core.Mapping {
+func (f *FullstackTemplate) GetMappings(filePath string) []core.Mapping {
 	switch filePath {
 	case "go.mod":
 		return []core.Mapping{
-			{Find: "module github.com/acheevo/api-template", Replace: "module github.com/{{.GitHubRepo}}"},
+			{Find: "module github.com/acheevo/fullstack-template", Replace: "module github.com/{{.GitHubRepo}}"},
 		}
 	case "cmd/api/main.go":
 		return []core.Mapping{
-			{Find: "\"github.com/acheevo/api-template/", Replace: "\"github.com/{{.GitHubRepo}}/"},
+			{Find: "\"github.com/acheevo/fullstack-template/", Replace: "\"github.com/{{.GitHubRepo}}/"},
 		}
 	case "README.md":
 		return []core.Mapping{
-			{Find: "# Go API Template", Replace: "# {{.ProjectName}}"},
+			{Find: "# Fullstack Template", Replace: "# {{.ProjectName}}"},
+			{Find: "# Go + React Fullstack Template", Replace: "# {{.ProjectName}}"},
 			{
-				Find:    "git clone https://github.com/acheevo/api-template.git",
+				Find:    "git clone https://github.com/acheevo/fullstack-template.git",
 				Replace: "git clone https://github.com/{{.GitHubRepo}}.git",
 			},
-			{Find: "cd api-template", Replace: "cd {{.ProjectName | kebab}}"},
+			{Find: "cd fullstack-template", Replace: "cd {{.ProjectName | kebab}}"},
 		}
 	case "docker-compose.yml":
 		return []core.Mapping{
-			{Find: "api-template", Replace: "{{.ProjectName | kebab}}"},
+			{Find: "fullstack-template", Replace: "{{.ProjectName | kebab}}"},
+			{Find: "fullstack_template", Replace: "{{.ProjectName | snake}}"},
 		}
 	case "internal/shared/config/config.go":
 		return []core.Mapping{
 			{
-				Find:    "ServiceName    string `envconfig:\"SERVICE_NAME\" default:\"api-template\"`",
+				Find:    "ServiceName    string `envconfig:\"SERVICE_NAME\" default:\"fullstack-template\"`",
 				Replace: "ServiceName    string `envconfig:\"SERVICE_NAME\" default:\"{{.ProjectName | kebab}}\"`",
 			},
 			{
-				Find:    "DBName            string `envconfig:\"DB_NAME\" default:\"api_template\"`",
-				Replace: "DBName            string `envconfig:\"DB_NAME\" default:\"{{.ProjectName | lower}}\"`",
+				Find:    "DBName            string `envconfig:\"DB_NAME\" default:\"fullstack_template\"`",
+				Replace: "DBName            string `envconfig:\"DB_NAME\" default:\"{{.ProjectName | snake}}\"`",
 			},
 		}
 	case "Makefile":
 		return []core.Mapping{
-			{Find: "docker build -t api-template .", Replace: "docker build -t {{.ProjectName | kebab}} ."},
-			{Find: "docker rmi api-template", Replace: "docker rmi {{.ProjectName | kebab}}"},
+			{Find: "docker build -t fullstack-template", Replace: "docker build -t {{.ProjectName | kebab}}"},
+			{Find: "docker rmi fullstack-template", Replace: "docker rmi {{.ProjectName | kebab}}"},
+		}
+	case "frontend/package.json":
+		return []core.Mapping{
+			{Find: "\"name\": \"fullstack-template\"", Replace: "\"name\": \"{{.ProjectName | kebab}}\""},
+			{Find: "\"description\": \"Fullstack template\"", Replace: "\"description\": \"{{.Description}}\""},
+		}
+	case "frontend/index.html":
+		return []core.Mapping{
+			{Find: "<title>Fullstack Template</title>", Replace: "<title>{{.ProjectName}}</title>"},
+		}
+	case "frontend/src/config/app.ts":
+		return []core.Mapping{
+			{Find: "APP_NAME: 'Fullstack Template'", Replace: "APP_NAME: '{{.ProjectName}}'"},
 		}
 	default:
 		// Apply global replacements for import paths in all Go files
 		if strings.HasSuffix(filePath, ".go") {
 			return []core.Mapping{
-				{Find: "\"github.com/acheevo/api-template/", Replace: "\"github.com/{{.GitHubRepo}}/"},
+				{Find: "\"github.com/acheevo/fullstack-template/", Replace: "\"github.com/{{.GitHubRepo}}/"},
 			}
 		}
 		return []core.Mapping{}
@@ -149,12 +164,12 @@ func (g *GoAPITemplate) GetMappings(filePath string) []core.Mapping {
 }
 
 // GetVariables returns the variables used by this template type
-func (g *GoAPITemplate) GetVariables() map[string]core.Variable {
+func (f *FullstackTemplate) GetVariables() map[string]core.Variable {
 	return map[string]core.Variable{
 		"ProjectName": {
 			Type:        "string",
 			Required:    true,
-			Description: "Name of the API project",
+			Description: "Name of the fullstack project",
 		},
 		"GitHubRepo": {
 			Type:        "string",
@@ -170,14 +185,14 @@ func (g *GoAPITemplate) GetVariables() map[string]core.Variable {
 		"Description": {
 			Type:        "string",
 			Required:    false,
-			Default:     "A Go REST API application",
+			Default:     "A fullstack application with Go API and React frontend",
 			Description: "Project description",
 		},
 	}
 }
 
 // ShouldTemplate determines if a file needs template processing
-func (g *GoAPITemplate) ShouldTemplate(filePath string) bool {
+func (f *FullstackTemplate) ShouldTemplate(filePath string) bool {
 	templatedFiles := []string{
 		"go.mod",
 		"README.md",
@@ -185,6 +200,9 @@ func (g *GoAPITemplate) ShouldTemplate(filePath string) bool {
 		"cmd/api/main.go",
 		"internal/shared/config/config.go",
 		"Makefile",
+		"frontend/package.json",
+		"frontend/index.html",
+		"frontend/src/config/app.ts",
 	}
 
 	for _, file := range templatedFiles {
@@ -193,7 +211,7 @@ func (g *GoAPITemplate) ShouldTemplate(filePath string) bool {
 		}
 	}
 
-	// All Go files need import path replacements
+	// Specific Go files that need import path replacements (not all Go files)
 	if strings.HasSuffix(filePath, ".go") {
 		return true
 	}
@@ -202,10 +220,20 @@ func (g *GoAPITemplate) ShouldTemplate(filePath string) bool {
 }
 
 // ShouldSkip determines if a file/directory should be skipped during extraction
-func (g *GoAPITemplate) ShouldSkip(path string) bool {
+func (f *FullstackTemplate) ShouldSkip(path string) bool {
 	baseName := filepath.Base(path)
 
-	// Always include important Go project dotfiles
+	// Skip node_modules explicitly (most important skip rule)
+	if strings.Contains(path, "node_modules") {
+		return true
+	}
+
+	// Skip compiled binaries and executables
+	if baseName == "api" && !strings.HasSuffix(path, ".go") {
+		return true
+	}
+
+	// Always include important project dotfiles
 	importantDotfiles := []string{
 		".dockerignore",
 		".gitignore",
@@ -230,12 +258,14 @@ func (g *GoAPITemplate) ShouldSkip(path string) bool {
 		"bin",
 		"tmp",
 		"coverage",
+		"dist",
+		"build",
 	}
 	return shouldSkipCommon(path, skipDirs)
 }
 
 // calculateSchemaHash calculates a hash for the entire schema
-func (g *GoAPITemplate) calculateSchemaHash(schema *core.TemplateSchema) string {
+func (f *FullstackTemplate) calculateSchemaHash(schema *core.TemplateSchema) string {
 	// Create a deterministic string representation of the schema
 	var content strings.Builder
 	content.WriteString(schema.Name)

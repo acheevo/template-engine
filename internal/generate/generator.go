@@ -1,6 +1,7 @@
 package generate
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -45,6 +46,9 @@ func NewGenerator(schemaFile, outputDir, projectName, githubRepo string) (*Gener
 	funcMap := template.FuncMap{
 		"kebab": func(s string) string {
 			return strings.ToLower(strings.ReplaceAll(s, " ", "-"))
+		},
+		"snake": func(s string) string {
+			return strings.ToLower(strings.ReplaceAll(s, " ", "_"))
 		},
 		"upper": strings.ToUpper,
 		"lower": strings.ToLower,
@@ -124,22 +128,58 @@ func (g *Generator) processTemplatedFile(fileSpec core.FileSpec, destPath string
 		content = strings.ReplaceAll(content, mapping.Find, mapping.Replace)
 	}
 
+	// Temporarily replace our project template variables and functions with placeholders
+	templateReplacements := map[string]string{
+		"{{.ProjectName}}":         "__PROJECT_NAME_PLACEHOLDER__",
+		"{{.GitHubRepo}}":          "__GITHUB_REPO_PLACEHOLDER__",
+		"{{.Author}}":              "__AUTHOR_PLACEHOLDER__",
+		"{{.Description}}":         "__DESCRIPTION_PLACEHOLDER__",
+		"{{.ProjectName | kebab}}": "__PROJECT_NAME_KEBAB_PLACEHOLDER__",
+		"{{.ProjectName | snake}}": "__PROJECT_NAME_SNAKE_PLACEHOLDER__",
+		"{{.ProjectName | upper}}": "__PROJECT_NAME_UPPER_PLACEHOLDER__",
+		"{{.ProjectName | lower}}": "__PROJECT_NAME_LOWER_PLACEHOLDER__",
+		"{{.ProjectName | title}}": "__PROJECT_NAME_TITLE_PLACEHOLDER__",
+	}
+
+	for find, replace := range templateReplacements {
+		content = strings.ReplaceAll(content, find, replace)
+	}
+
+	// Escape all remaining Go template syntax
+	content = strings.ReplaceAll(content, "{{", "__ESCAPED_LEFT_BRACE__")
+	content = strings.ReplaceAll(content, "}}", "__ESCAPED_RIGHT_BRACE__")
+
+	// Restore our project template variables
+	for find, replace := range templateReplacements {
+		content = strings.ReplaceAll(content, replace, find)
+	}
+
 	// Parse and execute template
 	tmpl, err := template.New("file").Funcs(g.templateFuncMap).Parse(content)
 	if err != nil {
 		return fmt.Errorf("failed to parse template: %w", err)
 	}
 
-	// Create destination file
+	// Execute template to buffer first
+	var buf bytes.Buffer
+	if err := tmpl.Execute(&buf, g.variables); err != nil {
+		return fmt.Errorf("failed to execute template: %w", err)
+	}
+
+	// Restore escaped Go template syntax
+	result := buf.String()
+	result = strings.ReplaceAll(result, "__ESCAPED_LEFT_BRACE__", "{{")
+	result = strings.ReplaceAll(result, "__ESCAPED_RIGHT_BRACE__", "}}")
+
+	// Create destination file and write the final content
 	file, err := os.Create(destPath)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	// Execute template with variables
-	if err := tmpl.Execute(file, g.variables); err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
+	if _, err := file.WriteString(result); err != nil {
+		return fmt.Errorf("failed to write file: %w", err)
 	}
 
 	return nil

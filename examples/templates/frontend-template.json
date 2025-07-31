@@ -36,11 +36,32 @@
       "hash": "90970a60afbd859566999e48f7e0a48097064a843c1d993cf5d1ff7b18088b65"
     },
     {
+      "path": ".dockerignore",
+      "template": false,
+      "content": "node_modules\nnpm-debug.log\nDockerfile\n.dockerignore\n.git\n.gitignore\nREADME.md\n.env\n.nyc_output\ncoverage\n.env.local\n.env.development.local\n.env.test.local\n.env.production.local\ndist\n.DS_Store",
+      "size": 190,
+      "hash": "6a642974020bb4533278c89f166027b186c9e1f156f88cc3950fbed249baf2a1"
+    },
+    {
+      "path": ".env.example",
+      "template": false,
+      "content": "# Project Configuration\n# Used in Docker and CI/CD processes\nPROJECT_NAME=\"Frontend Template\"  \n# Application name displayed in UI\nAPP_NAME=\"Frontend Template\"      \n\n# Port for both development and production servers\nPORT=3000                         \n\n# API Configuration (if needed)\n# API_BASE_URL=http://localhost:8000/api  # Backend API base URL\n# API_TIMEOUT=5000                        # API request timeout in milliseconds\n\n# Feature Flags (if needed)\n# ENABLE_ANALYTICS=false          # Enable/disable analytics tracking\n# ENABLE_DEBUG=true               # Enable debug mode and logging\n\n# Build Configuration\n# BUILD_OUTDIR=dist               # Output directory for production build\n# BASE_URL=/                      # Base URL for deployment (useful for subdirectories)",
+      "size": 780,
+      "hash": "b906b5fe5b5b35d57b31a26449ecd774407cb9e34d36ef9e6763076650111f2c"
+    },
+    {
+      "path": ".eslintrc.cjs",
+      "template": false,
+      "content": "module.exports = {\n  root: true,\n  env: { browser: true, es2020: true },\n  extends: [\n    'eslint:recommended',\n    'plugin:@typescript-eslint/recommended',\n    'plugin:react/recommended',\n    'plugin:react-hooks/recommended',\n  ],\n  ignorePatterns: ['dist', '.eslintrc.cjs'],\n  parser: '@typescript-eslint/parser',\n  plugins: ['react-refresh', '@typescript-eslint'],\n  settings: {\n    react: {\n      version: 'detect',\n    },\n  },\n  rules: {\n    'react/react-in-jsx-scope': 'off',\n    'react-refresh/only-export-components': [\n      'warn',\n      { allowConstantExport: true },\n    ],\n  },\n}",
+      "size": 592,
+      "hash": "31c7470a814b22fdc6e3f12320e32174c5024a073397e53fd41c83126a7172bd"
+    },
+    {
       "path": ".github/workflows/ci.yml",
       "template": false,
-      "content": "H4sIAAAAAAAA/9xWTW8iORC996+ow2q5xJBoNxKyFClZwkqsdgkKKJdVhIxd0E7ctqdtM0RJ/vvIxpBOQzQzl9FoONDqelWvPvxcoFmFFAaj3uAaJtKikhqLwmhaANjgyvgEWNRM8xIdhf+hYlKfgMA1KmPhPvkpNa/xU0Dnj/vDfVGgXkdwfHM9nN8Nb6ejmzGFzlm/UwBMbm/+GQ5m8/HVf0MKnb9roz1qATOsrGIeO0XxYBYuxvt9km3pM3QemBbwr9Q+2eugHTGaQlgE7QOJBG4LpS/n0botBQDJNIMS+aMJHrgRmDGA4GIPjHtptOvx7HO5/rNohU/RBwtjI7D74D4Id9GHaCMwEux8Pktf0v0bQMTJGmsnYwu/PT8D6nW3OTV4fW34c8ZLpNDRtuq0qxpp55lSINCiFqi5xLfi6qApaFsBl+2426DBP1mE1LHUq8OgOruQ5HKMQEntPwyNYDvoryCVAGatkpzFkR0PXUS3PZRVtfvcjWbD+dVkkpW0G19TX3F8BYAw/BFrktiaerpO9lzM70leX1OVRhSOwg9RGQT7rsRNi2XbVtZaam5DtsyX6z+OTzzTyYqt2jVltsRD4jrYc51/KGAe7+7GU+g2jEupkEK3t80V3xpg2jOwZMo1rcowQcHXoWn0bOUoLPN+ID7vBxoPeiV9GRZdV7IjN4Qsa1PRJNmLVckOYG/ewJPKCLyo2KY9rzus5fLp+MCSRkUDcd9UZitD2maZPw6SSY31+xwvjdpzvngtiABCIknSIdkHA7HQP+2f0v7pd87NKUQLZ+fNWYVaAVlC6b2lvZ4ynKnSOE9jhl6JTPkSXl4AN9LD2WGhzhvbqu9IN1XbpQBwyEMt/RNxnOnmfZ1mAKacab1bOD/Jbf3FfhN2hwAsCOkPo5IZCElPouJfhItSrsriSwAAAP//tcTXumYIAAA=",
-      "size": 2150,
-      "hash": "131dc5a15b5e1a41b63d9934cd5c925d9697b37ffb7c7a1072d6b763a3eb620c",
+      "content": "H4sIAAAAAAAA/9xWQW8aOxC+76+Yw9PjEkOi9yJFliIlj/AkqpaggHKpImTsgXXitd21TYmS/PfKxpDNQtT2UlXlsKudb+bzzOw3w2pWIYX+sNe/grG0qKTGojCaFgA2uDLeAeY107xER+EzVEzqIxC4QmUs3CU/pWY1fgno/GF/uCsK1KsIjq6vBrPbwc1keD2i0Dk56xQA45vrD4P+dDa6/DSg0Pm/NtqjFjDFyirmsVMU92buYrzfHbJJfYrOA9MCPkrtk70O2hGjKYR50D6QSOA2ULo4j9ZtKABIpumXyB9M8MCNwIwBBBdrYNxLo12PZ5+L1b9FK3yCPlgYGYHde/dOuIs+RBuBkWDr81X6ku6eACJOVlg7GUv46+kJUK+6za7By0vDnzNeIoWOtlWnndVQO8+UAoEWtUDNJb4mVwdNQdsKuGzH3QQN/tEipIqlXu4H1dmFJJdDBEpq/25oBNtB/wWpBDBrleQstuxw6Dy67aCsqu3vdjgdzC7H46ykbfua+ortKwCE4Q9Yk8TW1NNVsudk/k7y+p6qNKJwFH6JyiDYNymuWyybsrLWUnFrsmG+WP1zuOOZTlZs2c4psyUeEtfBjuv0XQHzOLtrT6HbMC6kQgrd3uas+NQA056BBVOuaVWGCQq+Dk2jZ0tHYZH3A/F5P9D4opfSl2HedSU7MCFkUZuKJsmeL0u2B3vzCh5VRuB5xdbtft1iLRePhxuWNCoaiPuhNFsnpG2W+WMjmdRYvz3juZF7Pi+OBRFASCRJOiS7YCAWzo7Pjmm8/GTnnEK0cHLa7FaoFZAFlN5b2uspw5kqjfOJvlciU76E52fAtfRwsp+q88a2MjxQT9V2KQAc8lBL/0gcZ7o5sZMMwIQzrbcr5zeZ1z/sX2H7EoAFIf1+VDIDIelOVPxIOC/lsiy+BQAA//+Q809MaAgAAA==",
+      "size": 2152,
+      "hash": "450f14a643f63abbc1e4961b49914dcbbc38d9009f8e7c185a988860ea475ea0",
       "compressed": true
     },
     {
@@ -49,6 +70,22 @@
       "content": "H4sIAAAAAAAA/6RUwW7bOhC8+ysW8AMMBGDyAjw8NDolcYu2aJMGqXMOaHJtMaZIlru0K6Q59i/6df2SgpISy6qTHnoJIu1wZzgzspMVFvAaAzqNTtVwE7RkpNHIu2IEQKpEnSzm/wHGcJ0c4BpjDRfeaVmDZDiBswu4mU0biAAVvStg8i+cwAEcwPFkBLDxcbWwfnOrDQXJqixGozs/p7w2NYxCP2owSC1bq60VtJVokJppTI5EZkrz5DgJm2VzM2r+EGPoFmVV7bJpiWrlE4PyGrsZQCKkAqRi4x0dqQ5zuv7vCbExXBZPTwDsV+gK+Of+HghVRKbDt+9n727Ob2efPry5hIeH0YD5M3IKcOk1Ht7RM8yUMcJ5jS9x57lYYyTT+Hz8atIbKqlKLGDiQjUZSuic1EMnOzcL+NZnCVWXzOClTNowLMxXEGLho8IhTa5IjuIPy2OG1QFF4/eeoTWO97yeJ2P1kHMaMV/tKlkL1/glPTZh63FAxihwLXPCDVqEZK2ILfp0/f/fhN0LwFeVYVEhkVzmJFTpIxadlzvm93Njw7aHlol9JRn19kDdrdg5Nve63rUWYDyGs6fje77sPnbnYVYagqtrUN6xNI56KjpqYA8h+jtUvHOTw+eXjsdjmJbSLQfMotOjm2CDVCu5bAnaDxm6hg9PnYVgDeqcRIqG69xEJFgbuW3ny2pmSGzccrD354/vMKsDQlNH45YQJBHqPbCPxvGLgPNc0dyEYDHfkJJSSLRI1tbPa7uyKAkh4trgBrjMUhrfQDoNFcYlglm0v75cZgHW+xXB0nvdD2AepVNlAU2Vjrb9Eem3AmjMAsXjCY4JfwUAAP//lILaQhEGAAA=",
       "size": 1553,
       "hash": "b4522b55884cb5e2934eb69b91d0f1e7cda903de6113c4bbe8b47ccad25779dc",
+      "compressed": true
+    },
+    {
+      "path": ".github/workflows/docker-release.yml",
+      "template": false,
+      "content": "H4sIAAAAAAAA/7xUUU/bPBR9z6+44kOq9GlpNW2TJksgBmSDwVoU2r1Wrn1JDYkd2delE+K/T3bSEkIr3vbSpvfcc+J7fHo1r5DBuREPaCHHErnDJDGaJQC1d8vwDUC8cM0TQAqD1f+DJEG9CqXx5Dyb/87y28vJmMHg49dBktybRWwndNTQmtdM0RFwLeFaaYp167VLjWbgF16TT0seOBGKH46w7ry5kTlbongwnkAYiS0G4B06BlyQMtqNRNtzsvqc9Oi3SL6GsZE4vHd76C70pNpIDAKbnkdFS7b9BRDwdIXWqTDC4dMToF4Nu47A83OnX3CxRAYDXVeD/qkutSNeliCxRi1RC4Uvh7NeM9B1BUL1ebnXQH9qhDix0sVbkm1b0tiyS6BUmvZSA9gnnXpVSuB1XSrBg2W7qYvQFrgyBiy1TcC6mehF751QaETpGPyTkICvN6eL4657Ks1MbVTipOu0UT5ZferrXZsClAYyG8kLv9itV5pC6Y7QvvB5h7bRDsFzKCySG55Pzq6yfD67zfLxt1/Z6/zV3LlHY+VOynRylcW89k6erclyQWEHxMpWT0kWiq9vHsXSwAHx4ujw6cfl9GJ2Os+z7/9ZvHOjsEVGzwdwfAyHLTaZTW9m0z3p0jKuoI1jquJF/yZbz6L7aWjeGvdlr3HCaMI1MRh2rQm7Dsh67BTj2nvH3lEXvsknP7Oz6bzFWMRCOofEi6HxVHuKzzv2QnpnTcXiH/WoWPI3MJkX8ENlJB5VfP03AAD//8mn08W/BQAA",
+      "size": 1471,
+      "hash": "c493085d26e235ee3915967d743d692d24037c6acb629dc56067e817605bd768",
+      "compressed": true
+    },
+    {
+      "path": ".gitignore",
+      "template": false,
+      "content": "H4sIAAAAAAAA/2RUwY7bNhC98yum8CGNAVFJbumlQHbTIsEiLeJFgJ4MihzL9FIkwSG1Vr6+GEqynd2LwHnzOJx5fOIGHkJPwvFnK13ohY9DY7ArPUdbMankX8WYUkhzHF/wHSavbgGxge/FZzsgGJWViNbwUdEasZWEaOZAuqCfmHxvE+oc0gSHkMB6yqkM6DMacLYj6NFjUhx2E5xIhxGT6rH9urvjpXC2a3QYudTdkgNzqVlo3phDcATOPiFYysp3xYm1FAuxVPCThoyU4ZKTftL7UHIsuXaLEb1Br6fLIRZJ+GBwPwRTHFIrThSHfVT6SfUcig3sfHhmAMzr/RP8fsw50h9tSwtNGhzbt+IZu2tRsYHHKeJOJxszaKWP3HimrlhnrD8EZvwTsw1eOfBxmDnXY4T0cfiFhOSsX2vJOZqDW9b3z/8+wNHSUoMnTRjdfoWYW/WBcIA3fDCP8Iab639y9j+VPHzxGftk8wQH61DI6iu7gkwzIaMfAf1oU/BsARhVsqpzWPeQkOjH+mF90IXIJDaScjPMV3cbxxRM0TzHLTovxQaiShpd0xVvHKZFr8tlzNkTyZD69q2Qi0zLpotO3/Cc5Ymg3gMsTpEez1mE2TPfyi2jvTj6Si7nLIylyv5bZeqmdeJ6TFu9PVRJrId8RIilc1aDsx4ZsgeYQkkQUzihzmx7Wispb8CHvDYqNrBOyE0u83Uu9DVuPjbvN3P15mKdhkqMIWXWrKa40bFgTEgvJ1/hdh3owhs/yDNkHGJt6ZU7ObOqzL8MphGT4423f5qkC17/ib8K4adwXk18KIRdONfU/eTVEO4/wQNf+Kqoqajp5j8Kk/+6A55t8WXG5Js6K/eQQ0KCH7u7YBBGTGSDp/lR4deK/WZ9vxLwnNFXipAj6WCwYQZXYrvD+GH2fbs0W9fFR1f6Hs0SVzUbyiqjnAa3oPwuKucWvP8pZPRR1tf2y/1nqoqisTkkEtIaVEIuXhBSO0UUVT4KqT+2/Nqp4vWRpczcPjFGfK8DNs8hPVFUGtcR2q34bV2uG+SJgr/CWdHTS2w+4wV4FWhObCU9x/qdX6/dzWu/XNf9bl9v4br6U8j9VshdDNnZ/pibH+/fvRPyMSk6Igk85mMZOpKmE4+X1f8BAAD//4uDhzv4BgAA",
+      "size": 1784,
+      "hash": "a5b714d0d50bf1d6c84fc75a156e5cb182226bb31db1bd9075942eef9220fa5f",
       "compressed": true
     },
     {
@@ -62,9 +99,9 @@
     {
       "path": "Dockerfile",
       "template": false,
-      "content": "# Build stage\nFROM node:18-alpine AS builder\n\n# Set working directory\nWORKDIR /app\n\n# Copy package files\nCOPY package*.json ./\n\n# Install dependencies\nRUN npm ci\n\n# Copy source code\nCOPY . .\n\n# Build the application\nRUN npm run build\n\n# Production stage\nFROM nginx:alpine AS production\n\n# Copy custom nginx configuration\nCOPY nginx.conf /etc/nginx/nginx.conf\n\n# Copy built application from builder stage\nCOPY --from=builder /app/dist /usr/share/nginx/html\n\n# Create a non-root user\nRUN addgroup -g 1001 -S nodejs \u0026\u0026 \\\n    adduser -S nextjs -u 1001\n\n# Change ownership of nginx directories and create required directories\nRUN chown -R nextjs:nodejs /usr/share/nginx/html \u0026\u0026 \\\n    chown -R nextjs:nodejs /var/cache/nginx \u0026\u0026 \\\n    chown -R nextjs:nodejs /var/log/nginx \u0026\u0026 \\\n    chown -R nextjs:nodejs /etc/nginx/conf.d \u0026\u0026 \\\n    mkdir -p /var/run/nginx \u0026\u0026 \\\n    chown -R nextjs:nodejs /var/run/nginx\n\n# Switch to non-root user\nUSER nextjs\n\n# Expose port\nEXPOSE 80\n\n# Start nginx\nCMD [\"nginx\", \"-g\", \"daemon off;\"]",
-      "size": 1009,
-      "hash": "767acec325d77d667314f064cbf22ccbc40005d7c76b2cd3079c0106980985cb"
+      "content": "# Build stage\nFROM node:18-alpine AS builder\n\n# Set working directory\nWORKDIR /app\n\n# Copy package files\nCOPY package*.json ./\n\n# Install dependencies\nRUN npm ci\n\n# Copy source code\nCOPY . .\n\n# Build the application\nRUN npm run build\n\n# Production stage\nFROM nginx:alpine AS production\n\n# Copy custom nginx configuration\nCOPY nginx.conf /etc/nginx/nginx.conf\n\n# Copy built application from builder stage\nCOPY --from=builder /app/dist /usr/share/nginx/html\n\n# Create a non-root user\nRUN addgroup -g 1001 -S nodejs \u0026\u0026 \\\n    adduser -S nextjs -u 1001\n\n# Change ownership of nginx directories and create required directories\nRUN chown -R nextjs:nodejs /usr/share/nginx/html \u0026\u0026 \\\n    chown -R nextjs:nodejs /var/cache/nginx \u0026\u0026 \\\n    chown -R nextjs:nodejs /var/log/nginx \u0026\u0026 \\\n    chown -R nextjs:nodejs /etc/nginx/conf.d \u0026\u0026 \\\n    mkdir -p /var/run/nginx \u0026\u0026 \\\n    chown -R nextjs:nodejs /var/run/nginx\n\n# Switch to non-root user\nUSER nextjs\n\n# Expose port\nEXPOSE 8080\n\n# Start nginx\nCMD [\"nginx\", \"-g\", \"daemon off;\"]",
+      "size": 1011,
+      "hash": "46569674cf8d9edbd6b93d934354d72da96e125ad65e9a28b84c28adf8fe927c"
     },
     {
       "path": "Dockerfile.dev",
@@ -94,9 +131,9 @@
     {
       "path": "docker-compose.yml",
       "template": false,
-      "content": "version: '3.8'\n\nservices:\n  frontend:\n    build:\n      context: .\n      dockerfile: Dockerfile\n    ports:\n      - \"${PORT:-3000}:80\"\n    environment:\n      - APP_NAME=${APP_NAME:-Frontend Template}\n    restart: unless-stopped\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"--no-verbose\", \"--tries=1\", \"--spider\", \"http://localhost/health\"]\n      interval: 30s\n      timeout: 10s\n      retries: 3\n      start_period: 30s\n\n  # Development service with hot reload\n  frontend-dev:\n    build:\n      context: .\n      dockerfile: Dockerfile.dev\n    ports:\n      - \"${PORT:-3000}:3000\"\n    volumes:\n      - .:/app\n      - /app/node_modules\n    environment:\n      - APP_NAME=${APP_NAME:-Frontend Template}\n      - PORT=${PORT:-3000}\n    command: npm run dev\n    profiles:\n      - dev",
-      "size": 773,
-      "hash": "c930bb44f2aa464a467edcbe860d34a4348624cc1a4977e32bfed6db7c482310"
+      "content": "version: '3.8'\n\nservices:\n  frontend:\n    build:\n      context: .\n      dockerfile: Dockerfile\n    ports:\n      - \"${PORT:-3000}:8080\"\n    environment:\n      - APP_NAME=${APP_NAME:-Frontend Template}\n    restart: unless-stopped\n    healthcheck:\n      test: [\"CMD\", \"wget\", \"--no-verbose\", \"--tries=1\", \"--spider\", \"http://localhost:8080/health\"]\n      interval: 30s\n      timeout: 10s\n      retries: 3\n      start_period: 30s\n\n  # Development service with hot reload\n  frontend-dev:\n    build:\n      context: .\n      dockerfile: Dockerfile.dev\n    ports:\n      - \"${PORT:-3000}:3000\"\n    volumes:\n      - .:/app\n      - /app/node_modules\n    environment:\n      - APP_NAME=${APP_NAME:-Frontend Template}\n      - PORT=${PORT:-3000}\n    command: npm run dev\n    profiles:\n      - dev",
+      "size": 780,
+      "hash": "c0db43efd0e73daa0f73eafd1c498e12e9250119777419f9d8fce4214eb9283a"
     },
     {
       "path": "index.html",
@@ -114,10 +151,691 @@
     {
       "path": "nginx.conf",
       "template": false,
-      "content": "H4sIAAAAAAAA/4RUTW/jRgy9+1cQ7gJpu1WULIqisNDT9uvULpoetugWwnhESUxGnAE5UqzW6W8vZMm2bCfpAOLhPfLxgTNUoALSzkgqLadcEW/GeB2oyBYL7JCjwj8LAIBHLw8oufXMaCN5Vri9efd1tnhaLOoYw5RGbF1bIKQY7STZUIPXsQ+o2S6lwNK0LuYDBCYER9YMgqm3EWOiUdA02WKXqygdyqQ9HEcakeHbm+wc+nO1+ms1x8fanE2D4Lw1rvYaJ93hiPcR0lYl1doITm7r2LijBnGBmzFej8yB+gx++psCWN8EQVXyfKCqgfCcnQB5Z6S/RBvi3CFXsZ7mecIG8RvCAgz3Z8zQN3fYoYNvzqjdrA/QcCJuYhqcIb6ErT6Tu2ncJXhvOqNWKMQTbn6F9+r5ZfL/6zeNeytnhua8ib55e26OGlNhql01MCc3dIe2FYo91GgKlKOuKYp8xOBj8qOYBpNfw/iqv//hlz/AuEfTa/Z8/nvPETkmv/fhWMZemcry9cqPd3fJB/Fx3CBY3mbQ+AK/WztvH5av1f6GJYqgJB+8I9vDkn0ie+yxRk4K/8iVmAJf1dl730/moDdtZaJi4UrRlVcwrPVqF3UFhYlmBWvn1yu4allNiQmxI8arY8PZ6H82XDgE62hop1QgiG8jcXVcXD/eKqSzBd+9NunzkhwqvGmFdiGFdL6F+8ynecv3xtYIGk0kC0YVo172+vdL+HT9+b1ureo2cLW9D8OH1baickvWb7Wrvnhz5gg3gQQVbmdreD7ZofvubYh3sAzt2pH9Cqhp2mjWDpcvuJ4GVaNxsQZbo314xnY68ae2jLWomjtfgS/LU2uCsRWGdzc3sByL+0+8fNn+7FHP/hdz02N8+i8AAP//4EXWLzYGAAA=",
-      "size": 1590,
-      "hash": "23ddc560508374fd636904ebc60956bcbb27330d3a46a57d752ebbf4d30e9d13",
+      "content": "H4sIAAAAAAAA/4RUTW/jRgy9+1cQ7gJpu1XkLIpiYaGn7depXTQ9bNEUwnhESUxGnAE5UqzW6W8vZCmxbCfZAcTDe+TjA2eoQAWknZFUWk65It6O8TJQkS0W2CFHhX8XAAD3Xu5QcuuZ0UbyrHC1evdttnhYLOoYw5RGbF1bIKQY7STZUIOXsQ+o2T6lwNK0LuYDBCYER9YMgqm3EWOiUdA02WKfqygdyqQ9HEcakeH96v0qOwX/Wq//Xh8zY33OpkFw3hpXe42T9nDE+whpq5JqbQQnx3Vs3EGDuMDtGC9H5on6An7+hwJY3wRBVfL8RFUD4Tk7AvLOSH+ONsS5Q65iPc30iA3it4QFGO5PmKFv7rBDB9+dUPt5P0HDibiNaXCG+By2+kzutnHn4K3pjFqhEI+4+TXequeXyc/Xbxv3Vk4MzXkTffP21Bw1psJUu2pgjm7oGm0rFHuo0RQoB11TFPmIwafkJzENJr+F8WX/8OOvf4Jx96bX7Pn8D54jckz+6MOhjL0yleXrlZ+ur5OP4uO4RbC8yqDxBX6/cd7eLV+r/R1LFEFJPnpHtocl+0QesfsaOSn8PVdiCnxV59H742Se9KbNTFQsXCi68gKG1V7vo66hMNGsYeP8Zg0XLaspMSF2xHhxaDgb/S+GC4dgHQ3tlAoE8W0krg6r68dbhXS25PvXJn1ekkOFN63QPqSQzrfwMfNh3vKDsTWCRhPJglHFqOe9/vsabi6/vNWdVd0Frna3Yfiw2lVU7sj6nXbVV29OHOE2kKDC1WwNTyc7dN+/DfEOlqHdOLLfADVNG83G4fIF19OgajQu1mBrtHfP2E4n/tiWsRZVc+cr8GV5bE0wtsLwbrWC5Vjc3/DyZfuzRz37X8xNj/Hh/wAAAP//RPbWnzoGAAA=",
+      "size": 1594,
+      "hash": "426bb6512c1835c1dc9e1a1e11187060cd1ed590f67944045dbb2457cecd3d50",
       "compressed": true
+    },
+    {
+      "path": "node_modules/@ungap/structured-clone/.github/workflows/node.js.yml",
+      "template": false,
+      "content": "# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node\n# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions\n\nname: build\n\non: [push, pull_request]\n\njobs:\n  build:\n\n    runs-on: ubuntu-latest\n\n    strategy:\n      matrix:\n        node-version: [16]\n\n    steps:\n    - uses: actions/checkout@v2\n    - name: Use Node.js ${{ matrix.node-version }}\n      uses: actions/setup-node@v2\n      with:\n        node-version: ${{ matrix.node-version }}\n        cache: 'npm'\n    - run: npm ci\n    - run: npm run build --if-present\n    - run: npm test\n    - run: npm run coverage --if-present\n    - name: Coveralls\n      uses: coverallsapp/github-action@master\n      with:\n        github-token: ${{ secrets.GITHUB_TOKEN }}\n",
+      "size": 872,
+      "hash": "d1e61aa7fafbbcc49d7fb88a78c59ce2c10277e7eb4a3a38d8d26e355b9c0bea"
+    },
+    {
+      "path": "node_modules/array-buffer-byte-length/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/array-buffer-byte-length\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 595,
+      "hash": "1e936a3dd6224c45778cac5b034ab981c2612c5fa63d6be08b4e5c1085747a99"
+    },
+    {
+      "path": "node_modules/array-includes/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/array-includes\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 585,
+      "hash": "35d5d143932fa980a7c34a8c445f9af66488ed8034063aec347ea21c09232b45"
+    },
+    {
+      "path": "node_modules/array.prototype.findlast/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/array.prototype.findlast\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 595,
+      "hash": "64fadff694b7ab4b3975dc88add434c99bd1a084f0be2b46d210466609335269"
+    },
+    {
+      "path": "node_modules/array.prototype.flat/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/array.prototype.flat\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 591,
+      "hash": "2bc303b1f004d858fe3dfedc929c16a23d54b94d26822642e3d05eee598b9c82"
+    },
+    {
+      "path": "node_modules/array.prototype.flatmap/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/array.prototype.flatmap\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 594,
+      "hash": "8b4ef3d0678967b4a21a731e858ddada93eca102dd49c9897901f24ce02d1d68"
+    },
+    {
+      "path": "node_modules/array.prototype.tosorted/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/array.prototype.tosorted\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 595,
+      "hash": "99d16d7fa7d7c5a3fecc3c2a60002774084f233c6bbcf4fe0ba98e59b40aa9d6"
+    },
+    {
+      "path": "node_modules/async-function/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/async-function\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 585,
+      "hash": "ccbdb92fca86cb9eb54223e593077ada4f2a5f3af0579e2b911e9e345f9980d6"
+    },
+    {
+      "path": "node_modules/available-typed-arrays/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/available-typed-arrays\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 593,
+      "hash": "8f9c7bc669bd9a71c6faf3117713cfde7badd582abe2b062d0df7543a0f9cf2e"
+    },
+    {
+      "path": "node_modules/balanced-match/.github/FUNDING.yml",
+      "template": false,
+      "content": "tidelift: \"npm/balanced-match\"\npatreon: juliangruber\n",
+      "size": 53,
+      "hash": "dda068232e4c62c70475945b843a5e1158cb6f1dd0cf64262db6b9e5a14b74cc"
+    },
+    {
+      "path": "node_modules/brace-expansion/.github/FUNDING.yml",
+      "template": false,
+      "content": "tidelift: \"npm/brace-expansion\"\npatreon: juliangruber\n",
+      "size": 54,
+      "hash": "8ee36ea6d63567ca62e3edb1323a49d4f865852811758ac42bfe26a96745a66f"
+    },
+    {
+      "path": "node_modules/call-bind/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/call-bind\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 580,
+      "hash": "a044e97e01de6eef53bde25cb024443a21a04a84f339ad118031443d3427b8db"
+    },
+    {
+      "path": "node_modules/call-bind-apply-helpers/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/call-bind-apply-helpers\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 594,
+      "hash": "ac7406f8f3f8eee59a2cefb2b2064ef232d01df43b7a9184cb7f48db7a8f7514"
+    },
+    {
+      "path": "node_modules/call-bound/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/call-bound\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 581,
+      "hash": "c88d2ad0d92b2977876a4f81aa60c4151c5b3a9e12eefe0843c0fbb87997edc6"
+    },
+    {
+      "path": "node_modules/data-view-buffer/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/data-view-buffer\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 562,
+      "hash": "9b3109ad318a057286a6e71e7dc37e10504323c181e340e8631d1fceb16f89a9"
+    },
+    {
+      "path": "node_modules/data-view-byte-length/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/data-view-byte-length\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 567,
+      "hash": "6ad2f5b1b2fa399286c72a8dd994cf3bff8208d1d432ee7107f0c9f1d1ed32ad"
+    },
+    {
+      "path": "node_modules/data-view-byte-offset/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/data-view-byte-offset\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 567,
+      "hash": "a179cfda28bfc95dcd3d4bdad22b67ff9854273119afc43483d87fa710f6b394"
+    },
+    {
+      "path": "node_modules/define-data-property/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/define-data-property\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 591,
+      "hash": "df75ed2445c3bd41cd33a86e496f4ec7e279dab92d1a01e0cf58c1ae2a675209"
+    },
+    {
+      "path": "node_modules/define-properties/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/define-properties\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 588,
+      "hash": "f569ace05f62d6d711bc5ca55b8acaedd9cd075e5ad8b7357450a1b6dc6bf67e"
+    },
+    {
+      "path": "node_modules/dunder-proto/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/dunder-proto\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 583,
+      "hash": "aa11a9d937d72381b6fc36c2fa3ea4e7bb3d9650c5d2604e14f2998be4e9a643"
+    },
+    {
+      "path": "node_modules/es-define-property/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/es-define-property\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 564,
+      "hash": "fdd23eb2a51d498f6bbc1d709eb6fad3778bbb0205126bc9548d4c59b714a402"
+    },
+    {
+      "path": "node_modules/es-errors/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/es-errors\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 555,
+      "hash": "5cffdeeee604fdf21f64369bf526c2c707377f01fdf1d816b204422cde144ce9"
+    },
+    {
+      "path": "node_modules/es-iterator-helpers/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/es-iterator-helpers\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 590,
+      "hash": "2e1eec84def2fad23fb29fb101d0750a8dcf3fa5915488201de21adc6c81806b"
+    },
+    {
+      "path": "node_modules/es-object-atoms/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/es-object\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 555,
+      "hash": "3a6cc965019e4c28527969955cb0fe7b8f8e456bcf9c5557b2fdd6c6cea2f9b6"
+    },
+    {
+      "path": "node_modules/es-shim-unscopables/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/es-shim-unscopables\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 590,
+      "hash": "a6a1edddd6ebd2ee71b1d2e08184f925b212366ab9af57ac8dc83a0c5a3c7dae"
+    },
+    {
+      "path": "node_modules/es-to-primitive/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/es-to-primitive\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 586,
+      "hash": "4c14f23c44d9bb7aeefdb44af7bda24eabb01321446d9ff3ac61bad4f667766f"
+    },
+    {
+      "path": "node_modules/eslint-plugin-react/node_modules/resolve/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/resolve\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 578,
+      "hash": "8782905aa6bfaf730fb964ce168a0befcb012546784d4519a8342b2989aa5e0b"
+    },
+    {
+      "path": "node_modules/fast-json-stable-stringify/.github/FUNDING.yml",
+      "template": false,
+      "content": "tidelift: \"npm/fast-json-stable-stringify\"\n",
+      "size": 43,
+      "hash": "b8999ab070976cb259c0a5c7955477027d75de717ed125706f92be900008181d"
+    },
+    {
+      "path": "node_modules/fastq/.github/dependabot.yml",
+      "template": false,
+      "content": "version: 2\nupdates:\n- package-ecosystem: npm\n  directory: \"/\"\n  schedule:\n    interval: daily\n  open-pull-requests-limit: 10\n  ignore:\n  - dependency-name: standard\n    versions:\n    - 16.0.3\n",
+      "size": 192,
+      "hash": "e5a4daa9baee5c8f7212aeb8fb0ec79f22ce9a49ff8f9e58b3b1f9d2df66f626"
+    },
+    {
+      "path": "node_modules/fastq/.github/workflows/ci.yml",
+      "template": false,
+      "content": "H4sIAAAAAAAA/9RSwY7aMBC9+yvmUMElTkloUZUT1156qNRThSqTTMHUOK5nTEGUf69sSAq7YoW0aLV7eRDNzHvj98aqNVZQayFaW8F3F2iZgQvG/PD4OyDxTIhVO6dKABhcqHoX/wH4YEnGkTAPloM0ipFYpBqxV4yLUyfAWrHX2+4LwLYNyg160klzOMqL0TCD+FsOM/iQbzOYRPgUoRglLBOOE6aO4mPCSb6ddbLoqFOREAipAlWzbi29r5dY/2oDTzfjfo8/mpf/twJwcSViWXts0LJWhir4qQyh6FmPfn0jhC9tg/mK+vlLPUIOTsaXTjfFVcVLJ97t9yev8vMCHA4P9T9bYmVMz+SDreDvObFbgz42gZTOt01Ii8FgcFFj5R497muwEMOkp+l9sKeLiARx4O6XUaQDKNMBlOXrD/q64ksE/Ywcu4R455BuifGNB1BM7m50dO5mu2Nz7bVj8S8AAP//uuMd8IAFAAA=",
+      "size": 1408,
+      "hash": "c8c1b113b0e393b0f55e01edd953a2fdda6744de835752043e3051299878c705",
+      "compressed": true
+    },
+    {
+      "path": "node_modules/for-each/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/for-each\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 579,
+      "hash": "e0f54f64698f2bf1eed4ec8be11fa7b9468e2f7be048b13d25e7307526fbfa1b"
+    },
+    {
+      "path": "node_modules/for-each/.github/SECURITY.md",
+      "template": false,
+      "content": "# Security\n\nPlease email [@ljharb](https://github.com/ljharb) or see https://tidelift.com/security if you have a potential security vulnerability to report.\n",
+      "size": 157,
+      "hash": "dd880fbe091e1b4fe671ef6e4879f7d144a64c0a3b21ce9b498c62c082ff3e50"
+    },
+    {
+      "path": "node_modules/function-bind/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/function-bind\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 584,
+      "hash": "728efc32ee016ce1b42d6b8848548b7f3540d5e0ba2966efca1774d132493d52"
+    },
+    {
+      "path": "node_modules/function-bind/.github/SECURITY.md",
+      "template": false,
+      "content": "# Security\n\nPlease email [@ljharb](https://github.com/ljharb) or see https://tidelift.com/security if you have a potential security vulnerability to report.\n",
+      "size": 157,
+      "hash": "dd880fbe091e1b4fe671ef6e4879f7d144a64c0a3b21ce9b498c62c082ff3e50"
+    },
+    {
+      "path": "node_modules/function.prototype.name/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/function.prototype.name\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 594,
+      "hash": "3739f090ddff499e7a2b749196afc00051caba45e4060b459892bac7b5e03822"
+    },
+    {
+      "path": "node_modules/functions-have-names/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/functions-have-names\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 591,
+      "hash": "dd66f0410b561890e8689a67cfc7b82a02140917a0d27a65f8e66416d8815320"
+    },
+    {
+      "path": "node_modules/get-intrinsic/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/get-intrinsic\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 584,
+      "hash": "24cafae83831c946115236f57f58e0d4797a3e7f6bcc8ad87b88a69d15a520c6"
+    },
+    {
+      "path": "node_modules/get-proto/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/get-proto\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 580,
+      "hash": "efc240256bdc771e8b442e1e88b40157e9fd51f5a1b2cb510da770087b77719c"
+    },
+    {
+      "path": "node_modules/get-symbol-description/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/get-symbol-description\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 593,
+      "hash": "cba54ada3f1e1a96b476e7d3ace4772e0f5c3334e4ba13078931bda328ee03f2"
+    },
+    {
+      "path": "node_modules/gopd/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/gopd\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 575,
+      "hash": "14a29231a020201285cec832f4d4c90b7296bc45f9117e3f2a28c5e51a430cae"
+    },
+    {
+      "path": "node_modules/has-bigints/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/has-bigints\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 582,
+      "hash": "1093cb6a97c6d2ad2529a700a26908619a3b06816afc2ad3d6646c90b696b5b0"
+    },
+    {
+      "path": "node_modules/has-property-descriptors/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/has-property-descriptors\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 595,
+      "hash": "aac113d18c37526f0d5d92f28d9be805d85037520e9d4b822a20cfe71d9acd40"
+    },
+    {
+      "path": "node_modules/has-proto/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/has-proto\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 580,
+      "hash": "e9176304ff0a6eefb1f367c6e817ec39120887a1c81a02b4070698469c5a05dc"
+    },
+    {
+      "path": "node_modules/has-symbols/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/has-symbols\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 582,
+      "hash": "e777d06bafdcd1d459abcbdc03ac52357b59c248614dc6143d8d02ebfb4aef15"
+    },
+    {
+      "path": "node_modules/has-tostringtag/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/has-tostringtag\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 586,
+      "hash": "5af2fc8a34665542659d4ce1520f5df2054affc3754edc49001e65d0c200e2e5"
+    },
+    {
+      "path": "node_modules/hasown/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/hasown\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 552,
+      "hash": "4a8aadc5bb4e3fcb59ced104864f1440a8a0b82c57d7a69ef3845223590039cc"
+    },
+    {
+      "path": "node_modules/internal-slot/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/internal-slot\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 559,
+      "hash": "cfdc971eb0b0fd57e18af8f11bf23a9ee0c833520924ed0bdef7b36dbcbdf376"
+    },
+    {
+      "path": "node_modules/is-array-buffer/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-array-buffer\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 586,
+      "hash": "18180c0e5b1595efe6eb6068087384901a4c10c185011b3aec6acaca8bd635ee"
+    },
+    {
+      "path": "node_modules/is-bigint/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-bigint\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 580,
+      "hash": "6bdaf7a7ed0fc2759e9c34ff8020cb532531edf44f66acb40bfde889bbda7f18"
+    },
+    {
+      "path": "node_modules/is-boolean-object/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-boolean-object\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 588,
+      "hash": "40881373207f62a2689e11d03075e03766901fe9168324a4936fdb67ab163358"
+    },
+    {
+      "path": "node_modules/is-callable/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-callable\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 582,
+      "hash": "ac97f78583380657d2414f4c053982206b48b86e42c7f3edfbbbc497f7a53580"
+    },
+    {
+      "path": "node_modules/is-data-view/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-typed-array\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 585,
+      "hash": "6022ca681ed10d2ba69b38845a6f2edc94a44277f59b0a93b17414da00a0c7b0"
+    },
+    {
+      "path": "node_modules/is-date-object/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-date-object\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 585,
+      "hash": "4f8b60d4b4e85ebfc9a5148d8555eb5eaa21fd6c9dae4fa80b9b70812d3088a4"
+    },
+    {
+      "path": "node_modules/is-finalizationregistry/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-finalizationregistry\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 594,
+      "hash": "3b7b0ba6945d057dc03e5dda6e29297c1af8aa15ada6877cf9f2e3ad998f2194"
+    },
+    {
+      "path": "node_modules/is-map/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-map\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 577,
+      "hash": "c90994dcd45603724d68c84cb2258770a996c749fae8126332a68826626a60b2"
+    },
+    {
+      "path": "node_modules/is-negative-zero/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: ljharb\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-negative-zero\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 585,
+      "hash": "62dd0f25318a10370e2b30749892cc90fe5c1532fdfb272a99dbbca8c9e6b9aa"
+    },
+    {
+      "path": "node_modules/is-number-object/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-number-object\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 587,
+      "hash": "768e8e58ef077c015614154d5985c987498c3f1061ee4233a5db2f5d6544cb3e"
+    },
+    {
+      "path": "node_modules/is-set/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-set\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 577,
+      "hash": "b9f2928df979347492b2cc9c8bc7eb476a60cb0715903fbb0571cec5082027da"
+    },
+    {
+      "path": "node_modules/is-shared-array-buffer/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-shared-array-buffer\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 593,
+      "hash": "d033cf262d3aabbf0fc75bad89a9c84447035d364077bc848fea916d5e8b4670"
+    },
+    {
+      "path": "node_modules/is-string/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-string\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 580,
+      "hash": "0d779a8864bbb01c35283ea1289c8a161cab19296f46715e737befc7d7890b1b"
+    },
+    {
+      "path": "node_modules/is-symbol/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-symbol\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 580,
+      "hash": "2bb129d1f71c69043f33545d8feba5e9723f988ce6a6458fd0f2c358a2f53539"
+    },
+    {
+      "path": "node_modules/is-typed-array/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-typed-array\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 585,
+      "hash": "6022ca681ed10d2ba69b38845a6f2edc94a44277f59b0a93b17414da00a0c7b0"
+    },
+    {
+      "path": "node_modules/is-weakmap/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-weakmap\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 581,
+      "hash": "f6c8cd3e22eb31174e5a638bbdae92aeea068375cd19c2178a5cfb08e8ff6846"
+    },
+    {
+      "path": "node_modules/is-weakref/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-weakref\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 581,
+      "hash": "c2a8c9a4121545c46eac5a3efbafc18f9d355a8dfc119a59d03c9c8b2c320818"
+    },
+    {
+      "path": "node_modules/is-weakset/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/is-weakset\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 581,
+      "hash": "54a3763124c2b07ed5181f971921ceb0ff80340b996d51753bbf5fa6df428a5e"
+    },
+    {
+      "path": "node_modules/iterator.prototype/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/iterator.prototype\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 564,
+      "hash": "d880ab68d5e5773c5e2917d80b822b247efa51464a3100b0b2b7557d5dba38be"
+    },
+    {
+      "path": "node_modules/jsx-ast-utils/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [jsx-eslint, ljharb]\nopen_collective: eslint-plugin-jsx-a11y\ntidelift: \"npm/jsx-ast-utils\"\n",
+      "size": 146,
+      "hash": "1b1f5e1e97f07c70b270a864ecda6a09aa7fdde27d5b99a8f5ecc79415ad2773"
+    },
+    {
+      "path": "node_modules/math-intrinsics/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/math-intrinsics\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 561,
+      "hash": "a038b7ce2a1e3b2a4dfb7956d262943a084f40d16ddd1a5c19e29a439409db50"
+    },
+    {
+      "path": "node_modules/object-inspect/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/object-inspect\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 585,
+      "hash": "c5d7d674c3932a7e2962b172028b54a41540916a991cdd9ee0bf60f901eb00ae"
+    },
+    {
+      "path": "node_modules/object.assign/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/object.assign\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 584,
+      "hash": "d18562f467d6d6fc294f0773c95e732128eab5bf0de1ec2362debd587203bc4d"
+    },
+    {
+      "path": "node_modules/own-keys/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/own-keys\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 579,
+      "hash": "f268e82d2566eaa8870d4959adffba0af64bc31d7016c147ee1eb8e6a48891ce"
+    },
+    {
+      "path": "node_modules/possible-typed-array-names/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/possible-typed-array-names\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 572,
+      "hash": "bdb08e519e61bd07c1acc03e2a103d60b6532b7a4243f1e66ada7aa44629bf9f"
+    },
+    {
+      "path": "node_modules/resolve/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/resolve\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 578,
+      "hash": "8782905aa6bfaf730fb964ce168a0befcb012546784d4519a8342b2989aa5e0b"
+    },
+    {
+      "path": "node_modules/reusify/.github/dependabot.yml",
+      "template": false,
+      "content": "version: 2\nupdates:\n- package-ecosystem: npm\n  directory: \"/\"\n  schedule:\n    interval: daily\n  open-pull-requests-limit: 10\n",
+      "size": 125,
+      "hash": "9e1294283e17484923d2fb39ede6c43d9139e28bce79c986f79bc231b1ded6bc"
+    },
+    {
+      "path": "node_modules/reusify/.github/workflows/ci.yml",
+      "template": false,
+      "content": "H4sIAAAAAAAA/+yTT88SMRDG7/0UczAvl+3Krq9vzJ68mhgPJp4MMaU7QrG0tTNFCPLdTQusoAli5GLCZbqb+fNMf8+uU0vsQBshvOvgY0g0ryAkaz9F/JqQeCLEwk+pEwAWZ0pv8hNATI5kbknT5DhJqxiJRckRR8U4O1QCLBVHsz6+ATjfo1xhJFM0R+O6GY8qyGc7quCxXlfwlMOrHJpxiW2JL0osFc3LEp/q9eQoi4GOKhISIXWgNBvv6Lmeo/7iE79ePQ57fDM8/7kVQMgrEUsdsUfHRlnq4LOyhGKYuuf1gRDe+R7rBQ3953qEnILMN72keE7i2XZ7YFWfJmC3+1X/jSNW1g6TYnIdfD8dHJZg9kUgZYi+T2UxeHg4y7EKv13ufXKQzaTL4+OhLLfn8+bfRVPsb4v9bXu3+bLN/+hip/0Ko5oVBrwJSNf4+Z870bY3J57J/RX30qGjCQWqNe6qH+kO/qT3rXH8Z9oZrfgRAAD//xfAVHfvBgAA",
+      "size": 1775,
+      "hash": "2518554c9d38a88c89d09c005367745909dc55db127560856cb044abbe698117",
+      "compressed": true
+    },
+    {
+      "path": "node_modules/safe-array-concat/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/safe-array-concat\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 588,
+      "hash": "0f03f317fa3f2d64a7c116702bed2883587dd15224427f02ae57f0b0e8b376eb"
+    },
+    {
+      "path": "node_modules/safe-push-apply/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/safe-push-apply\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 586,
+      "hash": "97ff294b3f3d259030548829d7c511e425fbeae234e20ccde83ac6f84ba2ca28"
+    },
+    {
+      "path": "node_modules/safe-regex-test/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/safe-regex-test\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 586,
+      "hash": "59e98206a08b78091ad8a2141b723a9e86fd1c836fb8ec8b2776c41e8f116108"
+    },
+    {
+      "path": "node_modules/set-function-length/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/set-function-name\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 563,
+      "hash": "bb2f341b76359bfe3f959fb2b1a922212cfdba4edb48d108ef848d8a39ec6bf1"
+    },
+    {
+      "path": "node_modules/set-function-name/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/set-function-name\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 563,
+      "hash": "bb2f341b76359bfe3f959fb2b1a922212cfdba4edb48d108ef848d8a39ec6bf1"
+    },
+    {
+      "path": "node_modules/set-proto/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/set-proto\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 580,
+      "hash": "28d76d9acbc30e52d1bdcf8830e519149aa9f038ce455ee5efd92956a2626828"
+    },
+    {
+      "path": "node_modules/side-channel/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/side-channel\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 583,
+      "hash": "1bae2dd6cba2f64d3780a4d3136eed2ed80b17888b0f2f169b90b65532ef1a4e"
+    },
+    {
+      "path": "node_modules/side-channel-list/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/side-channel-list\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 588,
+      "hash": "2b7392342ca20befcd193818b07b2b47fd9ade136c40c7f2a8b4528eba56b49e"
+    },
+    {
+      "path": "node_modules/side-channel-map/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/side-channel-map\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 587,
+      "hash": "85660691d4145ea3a89471a216f2ce892abe35348e162fd1fc903fb64c6f9c6d"
+    },
+    {
+      "path": "node_modules/side-channel-weakmap/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/side-channel-weakmap\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 591,
+      "hash": "d671a997a7bd387e3cb62cd1e84b7fee6eaa67f5c34236254ca63436c43a28db"
+    },
+    {
+      "path": "node_modules/stop-iteration-iterator/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/stop-iteration-iterator\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 594,
+      "hash": "f038ad7258e0968782abc2f6101398c262e169f33a9b77d1b71b3a6357f426e0"
+    },
+    {
+      "path": "node_modules/string.prototype.matchall/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/string.prototype.matchall\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 596,
+      "hash": "e6a6cb835a48569b48abeef5ca2280313ee6365c712243fd5deaf80f2a482ddb"
+    },
+    {
+      "path": "node_modules/supports-preserve-symlinks-flag/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/supports-preserve-symlink-flag\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 601,
+      "hash": "e6ce5e9e27435de1888df6b464c00ed0735c531c47b4daa138668d0a3e80cf3d"
+    },
+    {
+      "path": "node_modules/tailwindcss/stubs/.prettierrc.json",
+      "template": false,
+      "content": "{\n  \"printWidth\": 120,\n  \"semi\": false,\n  \"singleQuote\": true,\n  \"trailingComma\": \"es5\"\n}\n",
+      "size": 90,
+      "hash": "f2e25b4cadfa27ae487f6a1a000c22ff90fad22b9673a84cfbce337f0e9fb7a0"
+    },
+    {
+      "path": "node_modules/typed-array-buffer/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/typed-array-buffer\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with a single custom sponsorship URL\n",
+      "size": 564,
+      "hash": "7ba3c8ae9f4e66982e64c123e24124ef48f7ad7b9f53cbf3b6ca64cad45a6c5c"
+    },
+    {
+      "path": "node_modules/typed-array-byte-length/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/typed-array-length\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 589,
+      "hash": "c9a78e5da5a9e44670f363b129b062cacad04aab5411eecace16a3cf9152d30d"
+    },
+    {
+      "path": "node_modules/typed-array-byte-offset/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/typed-array-length\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 589,
+      "hash": "c9a78e5da5a9e44670f363b129b062cacad04aab5411eecace16a3cf9152d30d"
+    },
+    {
+      "path": "node_modules/typed-array-length/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/typed-array-length\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 589,
+      "hash": "c9a78e5da5a9e44670f363b129b062cacad04aab5411eecace16a3cf9152d30d"
+    },
+    {
+      "path": "node_modules/unbox-primitive/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/unbox-primitive\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 586,
+      "hash": "64ee0211b14e2584a77024a381e0316f5a327cf129573c23b81ed31236dd4e16"
+    },
+    {
+      "path": "node_modules/which-boxed-primitive/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/which-boxed-primitive\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 592,
+      "hash": "32d10c27102889b92eb564c34f6e36371b6a3353abe6d813eb6f88517578ffe6"
+    },
+    {
+      "path": "node_modules/which-collection/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/which-collection\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 587,
+      "hash": "f6f162ac2eaa6eb0947a809e02630c866b3ed6063c703b67da6d410957d18a62"
+    },
+    {
+      "path": "node_modules/which-typed-array/.github/FUNDING.yml",
+      "template": false,
+      "content": "# These are supported funding model platforms\n\ngithub: [ljharb]\npatreon: # Replace with a single Patreon username\nopen_collective: # Replace with a single Open Collective username\nko_fi: # Replace with a single Ko-fi username\ntidelift: npm/which-typed-array\ncommunity_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry\nliberapay: # Replace with a single Liberapay username\nissuehunt: # Replace with a single IssueHunt username\notechie: # Replace with a single Otechie username\ncustom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']\n",
+      "size": 588,
+      "hash": "31291dc68bc074258d0a3ecb268d3c710c31dd4df505f5f07f303186fd1b4448"
     },
     {
       "path": "package-lock.json",
@@ -330,7 +1048,7 @@
       "npm install"
     ]
   },
-  "hash": "09c7de724a8f7b329ecb9f0ae219703a6513c833710f98c471dbece59a5fc4e5",
+  "hash": "25f54e9f93c422904953c77ccf7809a921d71378ebe7edda7738712b50c8b8b6",
   "env_config": [
     {
       "name": "PROJECT_NAME",
