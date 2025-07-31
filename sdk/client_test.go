@@ -11,6 +11,11 @@ import (
 	_ "github.com/acheevo/template-engine/internal/templates" // Register template types
 )
 
+const (
+	testTemplateFrontend = "frontend"
+	testEnvContent       = "NODE_ENV=development\nAPI_URL=http://localhost:3000"
+)
+
 func TestNew(t *testing.T) {
 	client := New()
 	if client == nil {
@@ -362,34 +367,33 @@ func TestGenerateFromFile(t *testing.T) {
 }
 
 func TestListTemplates(t *testing.T) {
-	// Test with empty client
+	// Test ListSchemas (registered template schemas)
 	client := New()
-	templates := client.ListTemplates()
+	schemas := client.ListSchemas()
 
 	// Should return a slice (may be empty in test environment)
-	if templates == nil {
-		t.Error("Expected non-nil templates slice")
+	if schemas == nil {
+		t.Error("Expected non-nil schemas slice")
 	}
 
-	// Test with real client (uses global registry)
-	realClient := New()
-	realTemplates := realClient.ListTemplates()
+	// Test ListTemplateTypes (built-in template types)
+	templateTypes := client.ListTemplateTypes()
 
 	// Should contain the registered template types
-	expectedTypes := map[string]bool{"frontend": true, "go-api": true, "fullstack": true}
-	if len(realTemplates) != len(expectedTypes) {
-		t.Errorf("Expected %d templates, got %d", len(expectedTypes), len(realTemplates))
+	expectedTypes := map[string]bool{testTemplateFrontend: true, "go-api": true, "fullstack": true}
+	if len(templateTypes) != len(expectedTypes) {
+		t.Errorf("Expected %d template types, got %d", len(expectedTypes), len(templateTypes))
 	}
 
-	for _, templateName := range realTemplates {
+	for _, templateName := range templateTypes {
 		if !expectedTypes[templateName] {
-			t.Errorf("Unexpected template name: %q", templateName)
+			t.Errorf("Unexpected template type: %q", templateName)
 		}
 		delete(expectedTypes, templateName)
 	}
 
 	if len(expectedTypes) > 0 {
-		t.Errorf("Missing template names: %v", expectedTypes)
+		t.Errorf("Missing template types: %v", expectedTypes)
 	}
 }
 
@@ -418,9 +422,9 @@ func TestGetTemplateInfo(t *testing.T) {
 	}{
 		{
 			name:         "valid template type",
-			templateType: "frontend",
+			templateType: testTemplateFrontend,
 			wantErr:      false,
-			wantName:     "frontend",
+			wantName:     testTemplateFrontend,
 			wantVarCount: 4, // ProjectName, GitHubRepo, Author, Description
 		},
 		{
@@ -432,30 +436,30 @@ func TestGetTemplateInfo(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			info, err := client.GetTemplateInfo(tt.templateType)
+			info, err := client.GetTemplateTypeInfo(tt.templateType)
 
 			if tt.wantErr {
 				if err == nil {
-					t.Errorf("GetTemplateInfo() error = nil, wantErr %v", tt.wantErr)
+					t.Errorf("GetTemplateTypeInfo() error = nil, wantErr %v", tt.wantErr)
 				}
 				return
 			}
 
 			if err != nil {
-				t.Errorf("GetTemplateInfo() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("GetTemplateTypeInfo() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
 			if info == nil {
-				t.Fatal("GetTemplateInfo() returned nil info")
+				t.Fatal("GetTemplateTypeInfo() returned nil info")
 			}
 
 			if info.Name != tt.wantName {
-				t.Errorf("GetTemplateInfo() name = %v, want %v", info.Name, tt.wantName)
+				t.Errorf("GetTemplateTypeInfo() name = %v, want %v", info.Name, tt.wantName)
 			}
 
 			if len(info.Variables) != tt.wantVarCount {
-				t.Errorf("GetTemplateInfo() variables count = %v, want %v", len(info.Variables), tt.wantVarCount)
+				t.Errorf("GetTemplateTypeInfo() variables count = %v, want %v", len(info.Variables), tt.wantVarCount)
 			}
 
 			// Check that variables have expected structure
@@ -479,7 +483,7 @@ func TestGetTemplateVariables(t *testing.T) {
 	}{
 		{
 			name:         "valid template type",
-			templateType: "frontend",
+			templateType: testTemplateFrontend,
 			wantErr:      false,
 			wantVarCount: 4, // ProjectName, GitHubRepo, Author, Description
 		},
@@ -492,22 +496,23 @@ func TestGetTemplateVariables(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			variables, err := client.GetTemplateVariables(tt.templateType)
+			typeInfo, err := client.GetTemplateTypeInfo(tt.templateType)
 
 			if tt.wantErr {
 				if err == nil {
-					t.Errorf("GetTemplateVariables() error = nil, wantErr %v", tt.wantErr)
+					t.Errorf("GetTemplateTypeInfo() error = nil, wantErr %v", tt.wantErr)
 				}
 				return
 			}
 
 			if err != nil {
-				t.Errorf("GetTemplateVariables() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("GetTemplateTypeInfo() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
+			variables := typeInfo.Variables
 			if len(variables) != tt.wantVarCount {
-				t.Errorf("GetTemplateVariables() variables count = %v, want %v", len(variables), tt.wantVarCount)
+				t.Errorf("GetTemplateTypeInfo().Variables count = %v, want %v", len(variables), tt.wantVarCount)
 			}
 
 			// Check that variables have expected structure
@@ -640,16 +645,16 @@ func TestGetTemplateEnvConfig(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			envConfig, err := client.GetTemplateEnvConfig(tt.templateName)
+			envConfig, err := client.GetSchemaEnvConfig(tt.templateName)
 
 			if (err != nil) != tt.wantErr {
-				t.Errorf("GetTemplateEnvConfig() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("GetSchemaEnvConfig() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
 			if !tt.wantErr {
 				if len(envConfig) != tt.expectedLen {
-					t.Errorf("GetTemplateEnvConfig() returned %d env vars, expected %d", len(envConfig), tt.expectedLen)
+					t.Errorf("GetSchemaEnvConfig() returned %d env vars, expected %d", len(envConfig), tt.expectedLen)
 				}
 
 				// Check specific environment variables
@@ -679,6 +684,336 @@ func TestGetTemplateEnvConfig(t *testing.T) {
 	}
 }
 
+// TestTemplateTypesAPI tests the Template Types API (built-in extractors)
+func TestTemplateTypesAPI(t *testing.T) {
+	client := New()
+
+	t.Run("ListTemplateTypes", func(t *testing.T) {
+		types := client.ListTemplateTypes()
+		if len(types) == 0 {
+			t.Fatal("ListTemplateTypes returned empty list")
+		}
+
+		// Verify expected template types are registered
+		expectedTypes := map[string]bool{
+			testTemplateFrontend: false,
+			"go-api":             false,
+			"fullstack":          false,
+		}
+
+		for _, templateType := range types {
+			if _, exists := expectedTypes[templateType]; exists {
+				expectedTypes[templateType] = true
+			}
+		}
+
+		for templateType, found := range expectedTypes {
+			if !found {
+				t.Errorf("Expected template type %s not found in list", templateType)
+			}
+		}
+	})
+
+	t.Run("GetTemplateTypeInfo", func(t *testing.T) {
+		typeInfo, err := client.GetTemplateTypeInfo(testTemplateFrontend)
+		if err != nil {
+			t.Fatalf("GetTemplateTypeInfo failed: %v", err)
+		}
+
+		if typeInfo.Name != testTemplateFrontend {
+			t.Errorf("Expected name '%s', got %s", testTemplateFrontend, typeInfo.Name)
+		}
+		if typeInfo.Description == "" {
+			t.Error("Description should not be empty")
+		}
+		if typeInfo.Variables == nil {
+			t.Error("Variables should not be nil")
+		}
+	})
+
+	t.Run("GetTemplateTypeInfo_NotFound", func(t *testing.T) {
+		_, err := client.GetTemplateTypeInfo("nonexistent")
+		if err == nil {
+			t.Error("Expected error for nonexistent template type")
+		}
+	})
+
+	t.Run("ExtractSchema", func(t *testing.T) {
+		// Create a temporary source directory
+		tempDir := t.TempDir()
+
+		// Create some basic files that the frontend template would expect
+		err := os.WriteFile(filepath.Join(tempDir, "package.json"), []byte(`{"name": "test-app"}`), 0o644)
+		if err != nil {
+			t.Fatalf("Failed to create test file: %v", err)
+		}
+
+		// Create .env.example file
+		err = os.WriteFile(filepath.Join(tempDir, ".env.example"), []byte(testEnvContent), 0o644)
+		if err != nil {
+			t.Fatalf("Failed to create .env.example: %v", err)
+		}
+
+		schema, err := client.ExtractSchema(testTemplateFrontend, tempDir)
+		if err != nil {
+			t.Fatalf("ExtractSchema failed: %v", err)
+		}
+
+		if schema.Name == "" {
+			t.Error("Schema name should not be empty")
+		}
+		if schema.Type != testTemplateFrontend {
+			t.Errorf("Expected type '%s', got %s", testTemplateFrontend, schema.Type)
+		}
+	})
+}
+
+// TestTemplateSchemasAPI tests the Template Schemas API (registered data)
+func TestTemplateSchemasAPI(t *testing.T) {
+	client := New()
+
+	// Create a test template schema file
+	tempDir := t.TempDir()
+	schemaFile := filepath.Join(tempDir, "test-template.json")
+
+	testSchema := &core.TemplateSchema{
+		Name:        "test-template",
+		Type:        testTemplateFrontend,
+		Version:     "1.0.0",
+		Description: "Test template schema",
+		Variables: map[string]core.Variable{
+			"project_name": {
+				Type:        "string",
+				Description: "Name of the project",
+				Default:     "my-app",
+				Required:    true,
+			},
+		},
+		EnvConfig: []core.EnvVariable{
+			{
+				Name:        "NODE_ENV",
+				Description: "Node environment",
+				Example:     "development",
+			},
+		},
+		Files: []core.FileSpec{
+			{
+				Path:     "package.json",
+				Template: true,
+				Content:  `{"name": "{{.project_name}}"}`,
+				Size:     35,
+			},
+		},
+	}
+
+	schemaJSON, err := json.MarshalIndent(testSchema, "", "  ")
+	if err != nil {
+		t.Fatalf("Failed to marshal test schema: %v", err)
+	}
+
+	err = os.WriteFile(schemaFile, schemaJSON, 0o644)
+	if err != nil {
+		t.Fatalf("Failed to write test schema file: %v", err)
+	}
+
+	t.Run("RegisterSchema", func(t *testing.T) {
+		err := client.RegisterSchema(schemaFile)
+		if err != nil {
+			t.Fatalf("RegisterSchema failed: %v", err)
+		}
+	})
+
+	t.Run("ListSchemas", func(t *testing.T) {
+		schemas := client.ListSchemas()
+		if len(schemas) == 0 {
+			t.Fatal("ListSchemas returned empty list after registration")
+		}
+
+		found := false
+		for _, schema := range schemas {
+			if schema == "test-template" {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Error("Registered schema not found in list")
+		}
+	})
+
+	t.Run("GetSchemaInfo", func(t *testing.T) {
+		schemaInfo, err := client.GetSchemaInfo("test-template")
+		if err != nil {
+			t.Fatalf("GetSchemaInfo failed: %v", err)
+		}
+
+		if schemaInfo.Name != "test-template" {
+			t.Errorf("Expected name 'test-template', got %s", schemaInfo.Name)
+		}
+		if schemaInfo.Type != testTemplateFrontend {
+			t.Errorf("Expected type '%s', got %s", testTemplateFrontend, schemaInfo.Type)
+		}
+		if schemaInfo.Version != "1.0.0" {
+			t.Errorf("Expected version '1.0.0', got %s", schemaInfo.Version)
+		}
+		if schemaInfo.FileCount != 1 {
+			t.Errorf("Expected file count 1, got %d", schemaInfo.FileCount)
+		}
+		if schemaInfo.EnvVarCount != 1 {
+			t.Errorf("Expected env var count 1, got %d", schemaInfo.EnvVarCount)
+		}
+	})
+
+	t.Run("GetSchemaEnvConfig", func(t *testing.T) {
+		envVars, err := client.GetSchemaEnvConfig("test-template")
+		if err != nil {
+			t.Fatalf("GetSchemaEnvConfig failed: %v", err)
+		}
+
+		if len(envVars) != 1 {
+			t.Fatalf("Expected 1 env var, got %d", len(envVars))
+		}
+
+		envVar := envVars[0]
+		if envVar.Name != "NODE_ENV" {
+			t.Errorf("Expected env var name 'NODE_ENV', got %s", envVar.Name)
+		}
+		if envVar.Description != "Node environment" {
+			t.Errorf("Expected description 'Node environment', got %s", envVar.Description)
+		}
+		if envVar.Example != "development" {
+			t.Errorf("Expected example 'development', got %s", envVar.Example)
+		}
+	})
+
+	t.Run("GenerateFromSchema", func(t *testing.T) {
+		outputDir := t.TempDir()
+
+		variables := Variables{
+			ProjectName: "test-project",
+			GitHubRepo:  "user/test-repo",
+			OutputDir:   outputDir,
+		}
+
+		err := client.GenerateFromSchema(context.Background(), "test-template", variables)
+		if err != nil {
+			t.Fatalf("GenerateFromSchema failed: %v", err)
+		}
+
+		// Verify the generated file exists
+		generatedFile := filepath.Join(outputDir, "package.json")
+		if _, err := os.Stat(generatedFile); os.IsNotExist(err) {
+			t.Error("Expected generated file does not exist")
+		}
+	})
+}
+
+// TestTypeAliases verifies that type aliases work correctly
+func TestTypeAliases(t *testing.T) {
+	client := New()
+
+	// Create a test schema file to verify type compatibility
+	tempDir := t.TempDir()
+	schemaFile := filepath.Join(tempDir, "alias-test.json")
+
+	// Use core types directly to create schema
+	coreSchema := &core.TemplateSchema{
+		Name:        "alias-test",
+		Type:        testTemplateFrontend,
+		Version:     "1.0.0",
+		Description: "Test schema for type aliases",
+		Variables: map[string]core.Variable{
+			"test": {
+				Type:        "string",
+				Description: "Test variable",
+				Default:     "value",
+				Required:    true,
+			},
+		},
+		EnvConfig: []core.EnvVariable{
+			{
+				Name:        "TEST_VAR",
+				Description: "Test environment variable",
+				Example:     "test-value",
+			},
+		},
+		Files: []core.FileSpec{
+			{
+				Path:     "test.txt",
+				Template: true,
+				Content:  "{{.test}}",
+				Size:     9,
+			},
+		},
+	}
+
+	schemaJSON, err := json.MarshalIndent(coreSchema, "", "  ")
+	if err != nil {
+		t.Fatalf("Failed to marshal core schema: %v", err)
+	}
+
+	err = os.WriteFile(schemaFile, schemaJSON, 0o644)
+	if err != nil {
+		t.Fatalf("Failed to write schema file: %v", err)
+	}
+
+	// Register the schema
+	err = client.RegisterSchema(schemaFile)
+	if err != nil {
+		t.Fatalf("Failed to register schema: %v", err)
+	}
+
+	t.Run("VariableTypeAlias", func(t *testing.T) {
+		schemaInfo, err := client.GetSchemaInfo("alias-test")
+		if err != nil {
+			t.Fatalf("GetSchemaInfo failed: %v", err)
+		}
+
+		// schemaInfo.Variables should be directly usable as Variable (alias)
+		sdkVar := schemaInfo.Variables["test"]
+		if sdkVar.Description != "Test variable" {
+			t.Errorf("Type alias failed for Variable: expected 'Test variable', got %s", sdkVar.Description)
+		}
+	})
+
+	t.Run("EnvVariableTypeAlias", func(t *testing.T) {
+		envVars, err := client.GetSchemaEnvConfig("alias-test")
+		if err != nil {
+			t.Fatalf("GetSchemaEnvConfig failed: %v", err)
+		}
+
+		if len(envVars) != 1 {
+			t.Fatalf("Expected 1 env var, got %d", len(envVars))
+		}
+
+		// envVars[0] should be directly usable as EnvVariable (alias)
+		sdkEnvVar := envVars[0]
+		if sdkEnvVar.Name != "TEST_VAR" {
+			t.Errorf("Type alias failed for EnvVariable: expected 'TEST_VAR', got %s", sdkEnvVar.Name)
+		}
+	})
+
+	t.Run("TemplateSchemaTypeAlias", func(t *testing.T) {
+		// Extract should return a TemplateSchema that's directly compatible
+		tempSourceDir := t.TempDir()
+		err := os.WriteFile(filepath.Join(tempSourceDir, "package.json"), []byte(`{"name": "test"}`), 0o644)
+		if err != nil {
+			t.Fatalf("Failed to create test file: %v", err)
+		}
+
+		schema, err := client.ExtractSchema(testTemplateFrontend, tempSourceDir)
+		if err != nil {
+			t.Fatalf("ExtractSchema failed: %v", err)
+		}
+
+		// schema should be directly usable as TemplateSchema (alias)
+		sdkSchema := *schema
+		if sdkSchema.Type != testTemplateFrontend {
+			t.Errorf("Type alias failed for TemplateSchema: expected '%s', got %s", testTemplateFrontend, sdkSchema.Type)
+		}
+	})
+}
+
 func TestGetTemplateEnvConfigEmptyConfig(t *testing.T) {
 	client := New()
 
@@ -692,19 +1027,19 @@ func TestGetTemplateEnvConfigEmptyConfig(t *testing.T) {
 			"ProjectName": {Type: "string", Required: true},
 		},
 		Files: []core.FileSpec{
-			{Path: "test.txt", Content: "test", Template: false},
+			{Path: "test.txt", Content: "test", Size: 4},
 		},
 		EnvConfig: []core.EnvVariable{}, // Empty env config
 	}
 
 	client.templates["empty-env-template"] = testTemplate
 
-	envConfig, err := client.GetTemplateEnvConfig("empty-env-template")
+	envConfig, err := client.GetSchemaEnvConfig("empty-env-template")
 	if err != nil {
-		t.Errorf("GetTemplateEnvConfig() unexpected error = %v", err)
+		t.Errorf("GetSchemaEnvConfig() unexpected error = %v", err)
 	}
 
 	if len(envConfig) != 0 {
-		t.Errorf("GetTemplateEnvConfig() returned %d env vars, expected 0", len(envConfig))
+		t.Errorf("GetSchemaEnvConfig() returned %d env vars, expected 0", len(envConfig))
 	}
 }

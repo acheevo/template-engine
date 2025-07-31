@@ -85,7 +85,7 @@ func (c *Client) Generate(ctx context.Context, opts GenerateOptions) error {
 }
 
 // Extract creates a template schema from a source directory using the global registry
-func (c *Client) Extract(ctx context.Context, opts ExtractOptions) (*core.TemplateSchema, error) {
+func (c *Client) Extract(ctx context.Context, opts ExtractOptions) (*TemplateSchema, error) {
 	if err := c.ValidateExtractOptions(opts); err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (c *Client) Extract(ctx context.Context, opts ExtractOptions) (*core.Templa
 }
 
 // GenerateFromTemplate creates a project from a template schema
-func (c *Client) GenerateFromTemplate(ctx context.Context, schema *core.TemplateSchema, variables Variables) error {
+func (c *Client) GenerateFromTemplate(ctx context.Context, schema *TemplateSchema, variables Variables) error {
 	if err := c.ValidateVariables(variables); err != nil {
 		return err
 	}
@@ -149,7 +149,7 @@ func (c *Client) GenerateFromTemplate(ctx context.Context, schema *core.Template
 }
 
 // Validate checks if a template schema is valid
-func (c *Client) Validate(schema *core.TemplateSchema) error {
+func (c *Client) Validate(schema *TemplateSchema) error {
 	return core.ValidateSchema(schema)
 }
 
@@ -185,75 +185,94 @@ func (c *Client) RegisterTemplate(templatePath string) error {
 	return nil
 }
 
-// ListTemplates returns available template types from the global registry
-func (c *Client) ListTemplates() []string {
+// ========================================
+// Template Types API (Built-in Extractors)
+// ========================================
+
+// ListTemplateTypes returns available built-in template types for extraction
+func (c *Client) ListTemplateTypes() []string {
 	return core.ListTemplates()
 }
 
-// GetTemplateInfo returns the structure and metadata for a specific template type
-func (c *Client) GetTemplateInfo(templateType string) (*TemplateInfo, error) {
-	// Get template type from global registry
+// GetTemplateTypeInfo returns metadata for a built-in template type
+func (c *Client) GetTemplateTypeInfo(templateType string) (*TemplateTypeInfo, error) {
 	tmpl, err := core.GetTemplate(templateType)
 	if err != nil {
-		return nil, newTemplateTypeError("GetTemplateInfo", templateType)
+		return nil, newTemplateTypeError("GetTemplateTypeInfo", templateType)
 	}
 
-	// Get variables from template type
-	coreVariables := tmpl.GetVariables()
-
-	// Convert core.Variable map to SDK Variable map
-	sdkVariables := make(map[string]Variable)
-	for name, coreVar := range coreVariables {
-		sdkVariables[name] = Variable{
-			Type:        coreVar.Type,
-			Required:    coreVar.Required,
-			Default:     coreVar.Default,
-			Description: coreVar.Description,
-		}
-	}
-
-	return &TemplateInfo{
+	return &TemplateTypeInfo{
 		Name:        tmpl.Name(),
-		Type:        tmpl.Name(), // Template types use Name() as their type
-		Description: fmt.Sprintf("%s template", tmpl.Name()),
-		Variables:   sdkVariables,
+		Description: fmt.Sprintf("%s template type", tmpl.Name()),
+		Variables:   tmpl.GetVariables(), // Direct use since Variable = core.Variable
 	}, nil
 }
 
-// GetTemplateVariables returns just the variables for a specific template type
-func (c *Client) GetTemplateVariables(templateType string) (map[string]Variable, error) {
-	// Get template type from global registry
-	tmpl, err := core.GetTemplate(templateType)
-	if err != nil {
-		return nil, newTemplateTypeError("GetTemplateVariables", templateType)
-	}
-
-	// Get variables from template type
-	coreVariables := tmpl.GetVariables()
-
-	// Convert core.Variable map to SDK Variable map
-	sdkVariables := make(map[string]Variable)
-	for name, coreVar := range coreVariables {
-		sdkVariables[name] = Variable{
-			Type:        coreVar.Type,
-			Required:    coreVar.Required,
-			Default:     coreVar.Default,
-			Description: coreVar.Description,
-		}
-	}
-
-	return sdkVariables, nil
+// ExtractSchema extracts a template schema from a source directory using a template type
+func (c *Client) ExtractSchema(templateType, sourceDir string) (*TemplateSchema, error) {
+	return c.Extract(context.Background(), ExtractOptions{
+		SourceDir: sourceDir,
+		Type:      templateType,
+	})
 }
 
-// GetTemplateEnvConfig returns the environment configuration for a specific template schema file
-// Note: Environment configuration is only available in extracted template schemas, not template types
-func (c *Client) GetTemplateEnvConfig(templateName string) ([]core.EnvVariable, error) {
-	schema, exists := c.templates[templateName]
+// ExtractAndGenerateFromType is a convenience method that extracts and generates in one step
+func (c *Client) ExtractAndGenerateFromType(templateType, sourceDir, projectName, githubRepo, outputDir string) error {
+	return c.ExtractAndGenerate(context.Background(), sourceDir, templateType, projectName, githubRepo, outputDir)
+}
+
+// ========================================
+// Template Schemas API (User-registered Data)
+// ========================================
+
+// RegisterSchema registers a template schema from a JSON file
+func (c *Client) RegisterSchema(schemaFile string) error {
+	return c.RegisterTemplate(schemaFile) // Delegate to existing method
+}
+
+// ListSchemas returns registered template schema names
+func (c *Client) ListSchemas() []string {
+	names := make([]string, 0, len(c.templates))
+	for name := range c.templates {
+		names = append(names, name)
+	}
+	return names
+}
+
+// GetSchemaInfo returns detailed information about a registered template schema
+func (c *Client) GetSchemaInfo(schemaName string) (*TemplateSchemaInfo, error) {
+	schema, exists := c.templates[schemaName]
 	if !exists {
-		return nil, newTemplateTypeError("GetTemplateEnvConfig", templateName)
+		return nil, newTemplateTypeError("GetSchemaInfo", schemaName)
 	}
 
+	return &TemplateSchemaInfo{
+		Name:        schema.Name,
+		Type:        schema.Type,
+		Version:     schema.Version,
+		Description: schema.Description,
+		Variables:   schema.Variables, // Direct use since Variable = core.Variable
+		FileCount:   len(schema.Files),
+		EnvVarCount: len(schema.EnvConfig),
+	}, nil
+}
+
+// GetSchemaEnvConfig returns environment configuration for a registered template schema
+func (c *Client) GetSchemaEnvConfig(schemaName string) ([]EnvVariable, error) {
+	schema, exists := c.templates[schemaName]
+	if !exists {
+		return nil, newTemplateTypeError("GetSchemaEnvConfig", schemaName)
+	}
 	return schema.EnvConfig, nil
+}
+
+// GenerateFromSchema generates a project from a registered template schema
+func (c *Client) GenerateFromSchema(ctx context.Context, schemaName string, variables Variables) error {
+	schema, exists := c.templates[schemaName]
+	if !exists {
+		return newTemplateTypeError("GenerateFromSchema", schemaName)
+	}
+	return c.GenerateFromTemplate(ctx, schema, variables)
 }
 
 // Variables contains template variables
@@ -274,12 +293,29 @@ type TemplateInfo struct {
 	Variables   map[string]Variable `json:"variables"`
 }
 
-// Variable represents a template variable definition (exported from core.Variable)
-type Variable struct {
-	Type        string `json:"type"`
-	Required    bool   `json:"required"`
-	Default     string `json:"default,omitempty"`
-	Description string `json:"description,omitempty"`
+// Type aliases to avoid repetitive conversions
+type (
+	Variable       = core.Variable
+	EnvVariable    = core.EnvVariable
+	TemplateSchema = core.TemplateSchema
+)
+
+// TemplateTypeInfo represents metadata for a built-in template type (extractor)
+type TemplateTypeInfo struct {
+	Name        string              `json:"name"`
+	Description string              `json:"description"`
+	Variables   map[string]Variable `json:"variables"`
+}
+
+// TemplateSchemaInfo represents detailed information about a registered template schema
+type TemplateSchemaInfo struct {
+	Name        string              `json:"name"`
+	Type        string              `json:"type"`
+	Version     string              `json:"version"`
+	Description string              `json:"description"`
+	Variables   map[string]Variable `json:"variables"`
+	FileCount   int                 `json:"file_count"`
+	EnvVarCount int                 `json:"env_var_count"`
 }
 
 // ExtractAndGenerate extracts a template from a source directory and immediately generates a project
