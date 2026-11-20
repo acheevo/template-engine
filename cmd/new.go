@@ -23,10 +23,12 @@ and immediately generating from it. This is the fastest way to create new projec
 The command looks for reference projects in sibling directories:
 - frontend: ../frontend-template
 - go-api:   ../api-template
+- react-native: ../mobile-app
 
 Examples:
   template-engine new frontend "My React App" "user/my-app"
   template-engine new go-api "My API Service" "user/my-api"
+  template-engine new react-native "My Mobile App" "user/my-mobile-app"
   template-engine new --interactive`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if interactive {
@@ -98,6 +100,9 @@ func runNew(templateType, projectName, githubRepo, outputDir string) error {
 	case "frontend":
 		fmt.Println("  npm install")
 		fmt.Println("  npm run dev")
+	case "react-native":
+		fmt.Println("  npm ci")
+		fmt.Println("  npm start")
 	case "go-api", "api":
 		fmt.Println("  go mod tidy")
 		fmt.Println("  make run")

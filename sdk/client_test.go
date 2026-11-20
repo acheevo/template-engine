@@ -380,7 +380,7 @@ func TestListTemplates(t *testing.T) {
 	templateTypes := client.ListTemplateTypes()
 
 	// Should contain the registered template types
-	expectedTypes := map[string]bool{testTemplateFrontend: true, "go-api": true, "fullstack": true}
+	expectedTypes := map[string]bool{testTemplateFrontend: true, "go-api": true, "fullstack": true, "react-native": true}
 	if len(templateTypes) != len(expectedTypes) {
 		t.Errorf("Expected %d template types, got %d", len(expectedTypes), len(templateTypes))
 	}

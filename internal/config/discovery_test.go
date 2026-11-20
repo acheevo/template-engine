@@ -59,8 +59,8 @@ func TestLoadConfig_NonExistentFile(t *testing.T) {
 	}
 
 	// Should return default config when file doesn't exist
-	if len(config.References) != 2 {
-		t.Errorf("Expected 2 default references, got %d", len(config.References))
+	if len(config.References) != 3 {
+		t.Errorf("Expected 3 default references, got %d", len(config.References))
 	}
 }
 

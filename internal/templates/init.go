@@ -15,6 +15,5 @@ func init() {
 	// Register Fullstack template
 	core.RegisterTemplate(&FullstackTemplate{})
 
-	// Future template types will be registered here:
-	// core.RegisterTemplate(&MobileTemplate{})
+	core.RegisterTemplate(&ReactNativeTemplate{})
 }
