@@ -22,4 +22,8 @@ skips development caches, generated native projects, and local credentials.
 
 For a direct generate, run `template-engine new react-native "Care Notes" example/care-notes`
 from a checkout alongside `mobile-app`. Existing reference configurations can
-add the source with `template-engine config add react-native ../mobile-app`.
+add the source with this command.
+
+```sh
+template-engine config add react-native ../mobile-app "Expo React Native starter"
+```
