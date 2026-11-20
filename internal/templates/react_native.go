@@ -10,6 +10,12 @@ import (
 	"github.com/acheevo/template-engine/internal/envparser"
 )
 
+const (
+	packageJSONFile = "package.json"
+	packageLockFile = "package-lock.json"
+	envExampleFile  = ".env.example"
+)
+
 // ReactNativeTemplate packages the source of an Expo React Native starter.
 type ReactNativeTemplate struct{}
 
@@ -54,7 +60,7 @@ func (r *ReactNativeTemplate) Extract(sourceDir string) (*core.TemplateSchema, e
 			Path: rel, Content: content, Compressed: compressed, Template: len(mappings) > 0,
 			Size: int64(len(raw)), Hash: core.CalculateContentHash(string(raw)), Mappings: mappings,
 		})
-		if rel == ".env.example" {
+		if rel == envExampleFile {
 			schema.EnvConfig = envparser.ParseEnvExample(string(raw))
 		}
 		return nil
@@ -76,7 +82,7 @@ func (r *ReactNativeTemplate) Extract(sourceDir string) (*core.TemplateSchema, e
 
 func (r *ReactNativeTemplate) GetMappings(path string) []core.Mapping {
 	switch path {
-	case "package.json", "package-lock.json":
+	case packageJSONFile, packageLockFile:
 		return []core.Mapping{{Find: `"name": "mobile-app"`, Replace: `"name": {{.ProjectName | slugJSON}}`}}
 	case "app.json":
 		return []core.Mapping{
@@ -110,7 +116,7 @@ func (r *ReactNativeTemplate) ShouldSkip(path string) bool {
 		}
 	}
 	name := filepath.Base(path)
-	if strings.HasPrefix(name, ".env") && name != ".env.example" {
+	if strings.HasPrefix(name, ".env") && name != envExampleFile {
 		return true
 	}
 	switch name {
@@ -125,8 +131,8 @@ func (r *ReactNativeTemplate) ShouldSkip(path string) bool {
 	switch root {
 	case ".github", ".claude", ".rnstorybook", ".vscode", "assets", "docs", "scripts", "src", "tests":
 		return false
-	case "AGENTS.md", "LICENSE", ReadmeFile, "app.json", "package.json", "package-lock.json", "eas.json",
-		"Dockerfile", "nginx.conf", ".dockerignore", ".gitignore", ".nvmrc", ".env.example", "tsconfig.json",
+	case "AGENTS.md", "LICENSE", ReadmeFile, "app.json", packageJSONFile, packageLockFile, "eas.json",
+		"Dockerfile", "nginx.conf", ".dockerignore", ".gitignore", ".nvmrc", envExampleFile, "tsconfig.json",
 		"eslint.config.mjs", "jest.config.cjs", "metro.config.js", "playwright.config.ts":
 		return false
 	default:
