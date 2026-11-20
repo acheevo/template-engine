@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"encoding/base64"
 	"io"
+	"unicode/utf8"
 )
 
 const (
@@ -14,7 +15,9 @@ const (
 
 // CompressContent compresses content if it's above the threshold
 func CompressContent(content string) (string, bool, error) {
-	if len(content) < CompressionThreshold {
+	// JSON cannot preserve arbitrary binary bytes in a raw string.
+	forceCompression := len(content) == 0 || !utf8.ValidString(content)
+	if !forceCompression && len(content) < CompressionThreshold {
 		return content, false, nil
 	}
 
@@ -35,7 +38,7 @@ func CompressContent(content string) (string, bool, error) {
 	compressed := base64.StdEncoding.EncodeToString(buf.Bytes())
 
 	// Only use compression if it actually saves space
-	if len(compressed) < len(content) {
+	if forceCompression || len(compressed) < len(content) {
 		return compressed, true, nil
 	}
 

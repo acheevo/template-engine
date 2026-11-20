@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"text/template"
 	"unicode"
@@ -19,6 +20,23 @@ type Generator struct {
 	variables       *core.TemplateVariables
 	outputDir       string
 	templateFuncMap template.FuncMap
+}
+
+var slugSeparators = regexp.MustCompile(`[^a-z0-9]+`)
+
+func projectSlugJSON(name string) (string, error) {
+	slug := strings.Trim(slugSeparators.ReplaceAllString(strings.ToLower(name), "-"), "-")
+	if slug == "" {
+		slug = "app"
+	} else if slug[0] >= '0' && slug[0] <= '9' {
+		slug = "app-" + slug
+	}
+	return jsonString(slug)
+}
+
+func jsonString(value string) (string, error) {
+	data, err := json.Marshal(value)
+	return string(data), err
 }
 
 // NewGenerator creates a new generator instance
@@ -44,6 +62,8 @@ func NewGenerator(schemaFile, outputDir, projectName, githubRepo string) (*Gener
 
 	// Create template function map
 	funcMap := template.FuncMap{
+		"jsonString": jsonString,
+		"slugJSON":   projectSlugJSON,
 		"kebab": func(s string) string {
 			return strings.ToLower(strings.ReplaceAll(s, " ", "-"))
 		},
@@ -130,15 +150,17 @@ func (g *Generator) processTemplatedFile(fileSpec core.FileSpec, destPath string
 
 	// Temporarily replace our project template variables and functions with placeholders
 	templateReplacements := map[string]string{
-		"{{.ProjectName}}":         "__PROJECT_NAME_PLACEHOLDER__",
-		"{{.GitHubRepo}}":          "__GITHUB_REPO_PLACEHOLDER__",
-		"{{.Author}}":              "__AUTHOR_PLACEHOLDER__",
-		"{{.Description}}":         "__DESCRIPTION_PLACEHOLDER__",
-		"{{.ProjectName | kebab}}": "__PROJECT_NAME_KEBAB_PLACEHOLDER__",
-		"{{.ProjectName | snake}}": "__PROJECT_NAME_SNAKE_PLACEHOLDER__",
-		"{{.ProjectName | upper}}": "__PROJECT_NAME_UPPER_PLACEHOLDER__",
-		"{{.ProjectName | lower}}": "__PROJECT_NAME_LOWER_PLACEHOLDER__",
-		"{{.ProjectName | title}}": "__PROJECT_NAME_TITLE_PLACEHOLDER__",
+		"{{.ProjectName | jsonString}}": "__PROJECT_NAME_JSON_PLACEHOLDER__",
+		"{{.ProjectName | slugJSON}}":   "__PROJECT_NAME_SLUG_JSON_PLACEHOLDER__",
+		"{{.ProjectName}}":              "__PROJECT_NAME_PLACEHOLDER__",
+		"{{.GitHubRepo}}":               "__GITHUB_REPO_PLACEHOLDER__",
+		"{{.Author}}":                   "__AUTHOR_PLACEHOLDER__",
+		"{{.Description}}":              "__DESCRIPTION_PLACEHOLDER__",
+		"{{.ProjectName | kebab}}":      "__PROJECT_NAME_KEBAB_PLACEHOLDER__",
+		"{{.ProjectName | snake}}":      "__PROJECT_NAME_SNAKE_PLACEHOLDER__",
+		"{{.ProjectName | upper}}":      "__PROJECT_NAME_UPPER_PLACEHOLDER__",
+		"{{.ProjectName | lower}}":      "__PROJECT_NAME_LOWER_PLACEHOLDER__",
+		"{{.ProjectName | title}}":      "__PROJECT_NAME_TITLE_PLACEHOLDER__",
 	}
 
 	for find, replace := range templateReplacements {

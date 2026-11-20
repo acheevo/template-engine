@@ -27,6 +27,10 @@ func DefaultReferenceConfig() *ReferenceConfig {
 				Path:        "../frontend-template",
 				Description: "React + TypeScript + Vite frontend template",
 			},
+			"react-native": {
+				Path:        "../mobile-app",
+				Description: "Expo React Native starter with a web preview",
+			},
 			"go-api": {
 				Path:        "../api-template",
 				Description: "Go API with Gin + PostgreSQL + Clean Architecture",
