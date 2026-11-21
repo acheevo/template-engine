@@ -31,6 +31,10 @@ func DefaultReferenceConfig() *ReferenceConfig {
 				Path:        "../mobile-app",
 				Description: "Expo React Native starter with a web preview",
 			},
+			"python-api": {
+				Path:        "../python-api-template",
+				Description: "Python API with FastAPI and PostgreSQL",
+			},
 			"go-api": {
 				Path:        "../api-template",
 				Description: "Go API with Gin + PostgreSQL + Clean Architecture",

@@ -24,11 +24,13 @@ The command looks for reference projects in sibling directories:
 - frontend: ../frontend-template
 - go-api:   ../api-template
 - react-native: ../mobile-app
+- python-api: ../python-api-template
 
 Examples:
   template-engine new frontend "My React App" "user/my-app"
   template-engine new go-api "My API Service" "user/my-api"
   template-engine new react-native "My Mobile App" "user/my-mobile-app"
+  template-engine new python-api "My Python API" "user/python-api"
   template-engine new --interactive`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if interactive {
@@ -103,6 +105,8 @@ func runNew(templateType, projectName, githubRepo, outputDir string) error {
 	case "react-native":
 		fmt.Println("  npm ci")
 		fmt.Println("  npm start")
+	case "python-api":
+		fmt.Println("  docker compose up --build")
 	case "go-api", "api":
 		fmt.Println("  go mod tidy")
 		fmt.Println("  make run")

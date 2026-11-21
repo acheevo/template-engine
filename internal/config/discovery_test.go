@@ -18,7 +18,7 @@ func TestDefaultReferenceConfig(t *testing.T) {
 		t.Fatal("References map is nil")
 	}
 
-	expectedTypes := []string{"frontend", "go-api"}
+	expectedTypes := []string{"frontend", "go-api", "python-api", "react-native"}
 	for _, expectedType := range expectedTypes {
 		if _, exists := config.References[expectedType]; !exists {
 			t.Errorf("Expected template type %q to be in default config", expectedType)
@@ -59,8 +59,8 @@ func TestLoadConfig_NonExistentFile(t *testing.T) {
 	}
 
 	// Should return default config when file doesn't exist
-	if len(config.References) != 3 {
-		t.Errorf("Expected 3 default references, got %d", len(config.References))
+	if len(config.References) != 4 {
+		t.Errorf("Expected 4 default references, got %d", len(config.References))
 	}
 }
 

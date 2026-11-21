@@ -20,7 +20,8 @@ that can be used to generate similar projects.
 
 Examples:
   template-engine extract ../my-frontend --type frontend -o frontend-template.json
-  template-engine extract ../my-api --type go-api -o api-template.json`,
+  template-engine extract ../my-api --type go-api -o api-template.json
+  template-engine extract ../python-api-template --type python-api -o python-api-template.json`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		sourceDir := args[0]

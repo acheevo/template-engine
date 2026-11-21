@@ -7,25 +7,29 @@ import (
 
 // Common template file names
 const (
-	ReadmeFile = "README.md"
+	ReadmeFile      = "README.md"
+	githubDirectory = ".github"
+	composeFile     = "docker-compose.yml"
+	makeFile        = "Makefile"
+	testsDirectory  = "tests"
 )
 
 // shouldSkipCommon contains common logic for skipping files during template extraction
 func shouldSkipCommon(path string, skipDirs []string) bool {
 	// Always include .github directories and their contents
-	if strings.Contains(path, ".github") {
+	if strings.Contains(path, githubDirectory) {
 		return false
 	}
 
 	// Skip .git directory and all its contents
-	if strings.Contains(path, ".git") && !strings.Contains(path, ".github") {
+	if strings.Contains(path, ".git") && !strings.Contains(path, githubDirectory) {
 		return true
 	}
 
 	baseName := filepath.Base(path)
 
 	// Skip other hidden files/directories (starting with .) except .github
-	if strings.HasPrefix(baseName, ".") && baseName != ".github" && !strings.Contains(path, ".github") {
+	if strings.HasPrefix(baseName, ".") && baseName != githubDirectory && !strings.Contains(path, githubDirectory) {
 		return true
 	}
 

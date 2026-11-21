@@ -1,13 +1,10 @@
 package templates
 
 import (
-	"io/fs"
-	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/acheevo/template-engine/internal/core"
-	"github.com/acheevo/template-engine/internal/envparser"
 )
 
 const (
@@ -29,55 +26,9 @@ func (r *ReactNativeTemplate) Extract(sourceDir string) (*core.TemplateSchema, e
 		Description: "Expo and React Native for iOS and Android, with a deployable web preview.",
 		Variables:   r.GetVariables(),
 	}
-	err := filepath.WalkDir(sourceDir, func(path string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil || path == sourceDir {
-			return walkErr
-		}
-		rel, err := filepath.Rel(sourceDir, path)
-		if err != nil {
-			return err
-		}
-		rel = filepath.ToSlash(rel)
-		if r.ShouldSkip(rel) {
-			if entry.IsDir() {
-				return filepath.SkipDir
-			}
-			return nil
-		}
-		if !entry.Type().IsRegular() {
-			return nil
-		}
-		raw, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		content, compressed, err := core.CompressContent(string(raw))
-		if err != nil {
-			return err
-		}
-		mappings := r.GetMappings(rel)
-		schema.Files = append(schema.Files, core.FileSpec{
-			Path: rel, Content: content, Compressed: compressed, Template: len(mappings) > 0,
-			Size: int64(len(raw)), Hash: core.CalculateContentHash(string(raw)), Mappings: mappings,
-		})
-		if rel == envExampleFile {
-			schema.EnvConfig = envparser.ParseEnvExample(string(raw))
-		}
-		return nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	if err := core.ValidateSchema(schema); err != nil {
-		return nil, err
-	}
-	var digest strings.Builder
-	digest.WriteString(schema.Name + schema.Type + schema.Version)
-	for _, file := range schema.Files {
-		digest.WriteString(file.Path + file.Hash)
-	}
-	schema.Hash = core.CalculateContentHash(digest.String())
-	return schema, nil
+	return extractSourceTree(sourceDir, schema, func(path string, _ bool) bool {
+		return r.ShouldSkip(path)
+	}, r.GetMappings)
 }
 
 func (r *ReactNativeTemplate) GetMappings(path string) []core.Mapping {
@@ -129,7 +80,7 @@ func (r *ReactNativeTemplate) ShouldSkip(path string) bool {
 	}
 	root, _, _ := strings.Cut(path, "/")
 	switch root {
-	case ".github", ".claude", ".rnstorybook", ".vscode", "assets", "docs", "scripts", "src", "tests":
+	case githubDirectory, ".claude", ".rnstorybook", ".vscode", "assets", "docs", "scripts", "src", testsDirectory:
 		return false
 	case "AGENTS.md", "LICENSE", ReadmeFile, "app.json", packageJSONFile, packageLockFile, "eas.json",
 		"Dockerfile", "nginx.conf", ".dockerignore", ".gitignore", ".nvmrc", envExampleFile, "tsconfig.json",

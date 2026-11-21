@@ -118,7 +118,7 @@ func (f *FullstackTemplate) GetMappings(filePath string) []core.Mapping {
 			},
 			{Find: "cd fullstack-template", Replace: "cd {{.ProjectName | kebab}}"},
 		}
-	case "docker-compose.yml":
+	case composeFile:
 		return []core.Mapping{
 			{Find: "fullstack-template", Replace: "{{.ProjectName | kebab}}"},
 			{Find: "fullstack_template", Replace: "{{.ProjectName | snake}}"},
@@ -134,7 +134,7 @@ func (f *FullstackTemplate) GetMappings(filePath string) []core.Mapping {
 				Replace: "DBName            string `envconfig:\"DB_NAME\" default:\"{{.ProjectName | snake}}\"`",
 			},
 		}
-	case "Makefile":
+	case makeFile:
 		return []core.Mapping{
 			{Find: "docker build -t fullstack-template", Replace: "docker build -t {{.ProjectName | kebab}}"},
 			{Find: "docker rmi fullstack-template", Replace: "docker rmi {{.ProjectName | kebab}}"},
@@ -196,10 +196,10 @@ func (f *FullstackTemplate) ShouldTemplate(filePath string) bool {
 	templatedFiles := []string{
 		"go.mod",
 		"README.md",
-		"docker-compose.yml",
+		composeFile,
 		"cmd/api/main.go",
 		"internal/shared/config/config.go",
-		"Makefile",
+		makeFile,
 		"frontend/package.json",
 		"frontend/index.html",
 		"frontend/src/config/app.ts",

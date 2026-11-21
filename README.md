@@ -27,3 +27,29 @@ add the source with this command.
 ```sh
 template-engine config add react-native ../mobile-app "Expo React Native starter"
 ```
+
+## Python and FastAPI
+
+Use `python-api` to package the FastAPI and PostgreSQL reference checkout.
+
+```sh
+template-engine extract ../python-api-template --type python-api -o python-api-template.json
+template-engine generate python-api-template.json \
+  --project-name "Reports API" --github-repo example/reports-api \
+  --output-dir ./reports-api
+cd reports-api
+docker compose up --build
+```
+
+The generator updates the distribution name, uv lockfile, default service
+name, environment example and README. The archive includes the Docker
+workflows, tests and OpenAPI contract. It skips virtual environments,
+local environment files and Python build artifacts.
+
+Use `template-engine new python-api "Reports API" example/reports-api` for
+direct generation from a sibling checkout. Existing reference configurations
+can add the source with this command.
+
+```sh
+template-engine config add python-api ../python-api-template "FastAPI and PostgreSQL starter"
+```

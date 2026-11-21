@@ -117,7 +117,7 @@ func (g *GoAPITemplate) GetMappings(filePath string) []core.Mapping {
 			},
 			{Find: "cd api-template", Replace: "cd {{.ProjectName | kebab}}"},
 		}
-	case "docker-compose.yml":
+	case composeFile:
 		return []core.Mapping{
 			{Find: "api-template", Replace: "{{.ProjectName | kebab}}"},
 		}
@@ -132,7 +132,7 @@ func (g *GoAPITemplate) GetMappings(filePath string) []core.Mapping {
 				Replace: "DBName            string `envconfig:\"DB_NAME\" default:\"{{.ProjectName | lower}}\"`",
 			},
 		}
-	case "Makefile":
+	case makeFile:
 		return []core.Mapping{
 			{Find: "docker build -t api-template .", Replace: "docker build -t {{.ProjectName | kebab}} ."},
 			{Find: "docker rmi api-template", Replace: "docker rmi {{.ProjectName | kebab}}"},
@@ -181,10 +181,10 @@ func (g *GoAPITemplate) ShouldTemplate(filePath string) bool {
 	templatedFiles := []string{
 		"go.mod",
 		"README.md",
-		"docker-compose.yml",
+		composeFile,
 		"cmd/api/main.go",
 		"internal/shared/config/config.go",
-		"Makefile",
+		makeFile,
 	}
 
 	for _, file := range templatedFiles {
