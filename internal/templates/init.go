@@ -16,4 +16,5 @@ func init() {
 	core.RegisterTemplate(&FullstackTemplate{})
 
 	core.RegisterTemplate(&ReactNativeTemplate{})
+	core.RegisterTemplate(&PythonAPITemplate{})
 }
